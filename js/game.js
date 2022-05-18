@@ -13,11 +13,11 @@ gameScene.init = function (){
   this.enemyMinY = 0;
   this.enemyMaxY = config.height;
 
+
 this.enemies = [];
   this.enemyCount = 4;
   this.enemySpawnX = 150;
   this.enemySpacing = 100;
-
 };
 
 // ============ (2) preload =================
@@ -47,11 +47,18 @@ gameScene.create = function () {
   //console.log(this.player);
 
   //create the enemy sprites
-this.createEnemies();
+  this.createEnemies();
 
   //create the goal sprite
   this.goal = this.add.sprite(550, config.height/2, 'goal');
   this.goal.setScale(0.6);
+
+  //create path
+  this.p = new Phaser.Curves.Path(20,20);
+  this.p.lineTo(30,30);
+
+  //let gra = Phaser.Types.GameObjects.Graphics(3,3,0);
+
 };
 
 // ============ (4) update ==================
@@ -59,16 +66,12 @@ this.createEnemies();
 // for each frame during game play.
 gameScene.update = function () {  
   //check for active pointer (left mouse click or touch press)
-  
-  
   if(this.input.activePointer.isDown) {
     this.player.x += this.playerSpeed;
   }
 
   // check if player overlaps the goal
-
-
-    this.updateEnemies();
+  this.updateEnemies();
 };
 
 //checks if two sprites intersect
@@ -95,36 +98,22 @@ for(let i = 0; i < this.enemyCount; i++){
 }
 
  gameScene.updateEnemies = function(){
+  for(let i = 0; i < this.enemies.length; i++){
+    let enemy = this.enemies[i];
+    enemy.y += enemy.speed;
+    let hitBottom = enemy.y >= this.enemyMaxY;
+    let hitTop = enemy.y <= this.enemyMinY;
 
+    if (hitBottom || hitTop) {
+      enemy.speed *= -1;
+    }
 
-   for(let i = 0; i < this.enemies.length; i++){
-     let enemy = this.enemies[i];
-
-     enemy.y += enemy.speed;
-     
-     let hitBottom = enemy.y >= this.enemyMaxY;
-     let hitTop = enemy.y <= this.enemyMinY;
-     if (hitBottom || hitTop) {
-    enemy.speed *= -1;
-  }
-
-         if(checkOverlap(this.player, enemy)) {
-    //console.log('goal reached');
-    this.scene.restart();
-  }
-     
+    if(checkOverlap(this.player, enemy)) {
+        //console.log('goal reached');
+        this.scene.restart();
+      }
    }
-  // Move enemy
-  /*this.enemy1.y += this.enemySpeed;
-  
-  // condition if the enemy hit the boundary
-  let hitBottom = this.enemy1.y >= this.enemyMaxY;
-  let hitTop = this.enemy1.y <= this.enemyMinY;
-  
-  // if the enemy is at the boundary, reverse
-  if (hitBottom || hitTop) {
-    this.enemySpeed *= -1;
-  }*/
+ 
 }
 
 function getRandomInt(min, max){
