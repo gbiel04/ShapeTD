@@ -54,8 +54,26 @@ gameScene.create = function () {
   this.goal.setScale(0.6);
 
   //create path
-  this.p = new Phaser.Curves.Path(20,20);
-  this.p.lineTo(30,30);
+  
+  var points = [ 50,150,300,150,300,300,400,500];
+
+    var curve = new Phaser.Curves.Spline(points);
+
+    var graphics = this.add.graphics();
+
+    graphics.lineStyle(1, 0xffffff, 1);
+
+    curve.draw(graphics, 64);
+
+
+    this.ball1 = this.add.follower(curve, 50, 150, 'enemy');
+    this.ball1.setScale(.3);
+    //var ball2 = this.add.follower(curve, 50, 150, 'enemy');
+    //var ball3 = this.add.follower(curve, 50, 450, 'enemy');
+
+    this.ball1.startFollow(4000);
+    //ball2.startFollow(2000);
+    
 
   //let gra = Phaser.Types.GameObjects.Graphics(3,3,0);
 
@@ -120,6 +138,13 @@ function getRandomInt(min, max){
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random()*(max-min+1))+ min;
+}
+
+function attack(range){
+  
+
+
+
 }
 
 
