@@ -25,7 +25,7 @@ this.enemies = [];
 // All your images, sounds, and other files will be ready. 
 gameScene.preload = function (){
   this.load.image('player', 'assets/player.png');
-  this.load.image('background', 'assets/background.png');
+  this.load.image('bgr', 'assets/bgr.png');
   this.load.image('enemy', 'assets/dragon.png');
   this.load.image('goal', 'assets/treasure.png');
 };
@@ -35,7 +35,7 @@ gameScene.preload = function (){
 // Create your sprite objects and display them 
 gameScene.create = function () {
   // create background sprite
-  this.bg = this.add.sprite(0, 0, 'background');
+  this.bg = this.add.sprite(0, 0, 'bgr');
   // change the sprite origin to the top-left corner
   this.bg.setOrigin(0,0);
 
@@ -55,18 +55,34 @@ gameScene.create = function () {
 
   //create path
   
-  var points = [ 50,150,300,150,300,300,400,500];
+  var path = new Phaser.Curves.Path(0, 275);
 
-    var curve = new Phaser.Curves.Spline(points);
+  path.lineTo(140, 275);
+  path.lineTo(140, 195);
+  path.lineTo(255, 195);
+  path.lineTo(255, 460);
+  path.lineTo(420, 460);
+  path.lineTo(420, 115);
+  path.lineTo(140, 115);
+  path.lineTo(140, 35);
+  path.lineTo(515, 35);
+  path.lineTo(515, 115);
+  path.lineTo(615, 115);
+  path.lineTo(615, 205);
+  path.lineTo(515, 205);
+  path.lineTo(515, 350);
+  path.lineTo(135, 350);
+  path.lineTo(135, 550);
+
 
     var graphics = this.add.graphics();
 
     graphics.lineStyle(1, 0xffffff, 1);
 
-    curve.draw(graphics, 64);
+   path.draw(graphics, 64);
 
 
-    this.ball1 = this.add.follower(curve, 50, 150, 'enemy');
+    this.ball1 = this.add.follower(path, 0, 275, 'enemy');
     this.ball1.setScale(.3);
     //var ball2 = this.add.follower(curve, 50, 150, 'enemy');
     //var ball3 = this.add.follower(curve, 50, 450, 'enemy');
@@ -85,7 +101,7 @@ gameScene.create = function () {
 gameScene.update = function () {  
   //check for active pointer (left mouse click or touch press)
   if(this.input.activePointer.isDown) {
-    this.player.x += this.playerSpeed;
+    this.player.x +=this.playerSpeed;
   }
 
   // check if player overlaps the goal
@@ -151,8 +167,8 @@ function attack(range){
 // set the configuration of the game
 let config = {
   type: Phaser.AUTO, 
-  width: 640,
-  height: 360,
+  width: 697,
+  height: 502,
   scene: gameScene
 };
 
