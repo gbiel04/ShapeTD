@@ -13,11 +13,12 @@ gameScene.init = function (){
   this.enemyMinY = 0;
   this.enemyMaxY = config.height;
 
-
-this.enemies = [];
+  this.enemies = [];
   this.enemyCount = 4;
   this.enemySpawnX = 150;
   this.enemySpacing = 100;
+  // health
+  this.health = 100;
 };
 
 // ============ (2) preload =================
@@ -28,33 +29,33 @@ gameScene.preload = function (){
   this.load.image('bgr', 'assets/bgr.png');
   this.load.image('enemy', 'assets/dragon.png');
   this.load.image('goal', 'assets/treasure.png');
+  this.load.image('heart', 'assets/heart.png');
 };
 
 // ============ (3) create ==================
 // create is called once when preload is complete. 
 // Create your sprite objects and display them 
 gameScene.create = function () {
-  // create background sprite
+  //create background
   this.bg = this.add.sprite(0, 0, 'bgr');
-  // change the sprite origin to the top-left corner
   this.bg.setOrigin(0,0);
 
-  // create the player sprite
+  //create players
   this.player = this.add.sprite(50, config.height/2, 'player');
   this.player.depth = 1;
   this.player.setScale(0.3);
 
-  //console.log(this.player);
-
-  //create the enemy sprites
+  //create enemies
   this.createEnemies();
 
-  //create the goal sprite
-  this.goal = this.add.sprite(550, config.height/2, 'goal');
-  this.goal.setScale(0.6);
+  //create heart for health
+  this.heart = this.add.sprite(650, config.height/12, 'heart');
+  this.heart.setScale(0.01);
+  this.healthBar = this.add.text(550, config.height/16, 'health',{color: '#00ff00'});
+  this.healthBar.setStroke('#fff', 16);
+ 
 
   //create path
-  
   var path = new Phaser.Curves.Path(0, 275);
 
   path.lineTo(140, 275);
@@ -74,24 +75,12 @@ gameScene.create = function () {
   path.lineTo(135, 350);
   path.lineTo(135, 550);
 
-
-    var graphics = this.add.graphics();
-
-    graphics.lineStyle(1, 0xffffff, 1);
-
-   path.draw(graphics, 64);
-
-
-    this.ball1 = this.add.follower(path, 0, 275, 'enemy');
-    this.ball1.setScale(.3);
-    //var ball2 = this.add.follower(curve, 50, 150, 'enemy');
-    //var ball3 = this.add.follower(curve, 50, 450, 'enemy');
-
-    this.ball1.startFollow(4000);
-    //ball2.startFollow(2000);
-    
-
-  //let gra = Phaser.Types.GameObjects.Graphics(3,3,0);
+  var graphics = this.add.graphics();
+  graphics.lineStyle(1, 0xffffff, 1);
+  path.draw(graphics, 64);
+  this.ball1 = this.add.follower(path, 0, 275, 'enemy');
+  this.ball1.setScale(.3);
+  this.ball1.startFollow(4000);
 
 };
 
