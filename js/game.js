@@ -42,9 +42,9 @@ gameScene.create = function () {
   this.bg.setOrigin(0,0);
 
   //create players
-  this.player = this.add.sprite(50, config.height/2, 'player');
-  this.player.depth = 1;
-  this.player.setScale(0.3);
+  //this.player = this.add.sprite(50, config.height/2, 'player');
+  //this.player.depth = 1;
+  //this.player.setScale(0.3);
 
   //create health base
   this.health = this.add.sprite(135, 550, 'heart')
@@ -79,9 +79,25 @@ gameScene.create = function () {
   path.lineTo(135, 350);
   path.lineTo(135, 550);
 
+  var rect = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+  var rect2 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+  var rect3 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+  var rect4 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+  var rect5 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+
+
+
+
   var graphics = this.add.graphics();
   graphics.lineStyle(1, 0xffffff, 1);
   path.draw(graphics, 64);
+
+  graphics.strokeRectShape(rect);
+  graphics.strokeRectShape(rect2);
+  graphics.strokeRectShape(rect3);
+  graphics.strokeRectShape(rect4);
+  graphics.strokeRectShape(rect5);
+
   this.ball1 = this.add.follower(path, 0, 275, 'enemy');
   this.ball1.setScale(.3);
   this.ball1.startFollow(4000);
@@ -109,23 +125,23 @@ function checkOverlap(spriteA, spriteB) {
 };
 
 gameScene.createEnemies = function(){
-for(let i = 0; i < this.enemyCount; i++){
-  let enemy = this.add.sprite(0,0,'enemy');
-  this.enemies.push(enemy);
+//for(let i = 0; i < this.enemyCount; i++){
+  //let enemy = this.add.sprite(0,0,'enemy');
+  //this.enemies.push(enemy);
   //console.log(this.enemies);
 
-  enemy.x = this.enemySpawnX + (this.enemySpacing*i);
-  enemy.y = getRandomInt(this.enemyMinY, this.enemyMaxY);
+  //enemy.x = this.enemySpawnX + (this.enemySpacing*i);
+  //enemy.y = getRandomInt(this.enemyMinY, this.enemyMaxY);
   
   //enemy.y = config.height/2;
-  enemy.flipX =true;
-  enemy.setScale(0.6);
-  enemy.speed = this.enemySpeed;
-  }
+  //enemy.flipX =true;
+  //enemy.setScale(0.6);
+  //enemy.speed = this.enemySpeed;
+  //}
 }
 
  gameScene.updateEnemies = function(){
-  for(let i = 0; i < this.enemies.length; i++){
+  /*for(let i = 0; i < this.enemies.length; i++){
     let enemy = this.enemies[i];
     enemy.y += enemy.speed;
     let hitBottom = enemy.y >= this.enemyMaxY;
@@ -133,13 +149,13 @@ for(let i = 0; i < this.enemyCount; i++){
 
     if (hitBottom || hitTop) {
       enemy.speed *= -1;
-    }
+    }}*/ 
 
     if(checkOverlap(this.health, this.ball1)) {
         //console.log('goal reached');
         this.scene.restart();
       }
-   }
+   
  
 }
 
