@@ -19,6 +19,7 @@ gameScene.init = function (){
   this.enemySpacing = 100;
   // health
   this.health = 100;
+  
 };
 
 // ============ (2) preload =================
@@ -45,6 +46,9 @@ gameScene.create = function () {
   this.player.depth = 1;
   this.player.setScale(0.3);
 
+  //create health base
+  this.health = this.add.sprite(135, 550, 'heart')
+  this.health.setScale(0.01);
   //create enemies
   this.createEnemies();
 
@@ -131,7 +135,7 @@ for(let i = 0; i < this.enemyCount; i++){
       enemy.speed *= -1;
     }
 
-    if(checkOverlap(this.player, enemy)) {
+    if(checkOverlap(this.health, this.ball1)) {
         //console.log('goal reached');
         this.scene.restart();
       }
