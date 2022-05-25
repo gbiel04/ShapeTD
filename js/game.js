@@ -51,8 +51,8 @@ gameScene.create = function () {
   //create heart for health
   this.heart = this.add.sprite(650, config.height/12, 'heart');
   this.heart.setScale(0.01);
-  this.healthBar = this.add.text(550, config.height/16, 'health',{color: '#00ff00'});
-  this.healthBar.setStroke('#fff', 16);
+  this.healthBar = this.add.text(550, config.height/16, 'health',{color: 'red'});
+  this.healthBar.setStroke('#fff', 1);
  
 
   //create path
@@ -61,7 +61,7 @@ gameScene.create = function () {
   path.lineTo(140, 275);
   path.lineTo(140, 195);
   path.lineTo(255, 195);
-  path.lineTo(255, 460);
+  path.lineTo(255, 460);   
   path.lineTo(420, 460);
   path.lineTo(420, 115);
   path.lineTo(140, 115);
@@ -139,18 +139,23 @@ for(let i = 0; i < this.enemyCount; i++){
  
 }
 
+
+
 function getRandomInt(min, max){
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random()*(max-min+1))+ min;
 }
 
-function attack(range){
+// function attack(range, enemyArr){
+//   for(i = 0; i<enemyArr.length; i++){
+
+//   }
   
 
 
 
-}
+// }
 
 
 // set the configuration of the game
