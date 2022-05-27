@@ -101,11 +101,26 @@ gameScene.create = function () {
   path.lineTo(135, 350);
   path.lineTo(135, 550);
 
-  var rect = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
-  var rect2 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
-  var rect3 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
-  var rect4 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
-  var rect5 = new Phaser.Geom.Rectangle(50, 50, 50 , 50);
+  var rect = new Phaser.Geom.Rectangle(0, 265, 150 , 25);
+  var rect2 = new Phaser.Geom.Rectangle(130, 180, 25 , 100);
+  var rect3 = new Phaser.Geom.Rectangle(150, 180, 100 , 25);
+  var rect4 = new Phaser.Geom.Rectangle(240, 180, 25 , 290);
+  var rect5 = new Phaser.Geom.Rectangle(240, 450, 200 , 25);
+  var rect6 = new Phaser.Geom.Rectangle(405, 100, 30 , 380);
+  var rect7 = new Phaser.Geom.Rectangle(125, 100, 310 , 25);
+  var rect8 = new Phaser.Geom.Rectangle(125, 25, 25 , 100);
+  var rect9 = new Phaser.Geom.Rectangle(125, 25, 400 , 25);
+  var rect10 = new Phaser.Geom.Rectangle(500, 25, 25 , 100);
+  var rect11 = new Phaser.Geom.Rectangle(500, 100, 125 , 25);
+  var rect12 = new Phaser.Geom.Rectangle(600, 100, 25 , 110);
+  var rect13 = new Phaser.Geom.Rectangle(500, 190, 125 , 25);
+  var rect14 = new Phaser.Geom.Rectangle(495, 190, 30 , 180);
+  
+  var rect15 = new Phaser.Geom.Rectangle(125, 340, 400 , 30);
+  
+  var rect16 = new Phaser.Geom.Rectangle(120, 340, 30 , 200);
+
+
 
 
 
@@ -119,6 +134,18 @@ gameScene.create = function () {
   graphics.strokeRectShape(rect3);
   graphics.strokeRectShape(rect4);
   graphics.strokeRectShape(rect5);
+  graphics.strokeRectShape(rect6);
+  graphics.strokeRectShape(rect7);
+  graphics.strokeRectShape(rect8);
+  graphics.strokeRectShape(rect9);
+  graphics.strokeRectShape(rect10);
+  graphics.strokeRectShape(rect11);
+  graphics.strokeRectShape(rect12);
+  graphics.strokeRectShape(rect13);
+  graphics.strokeRectShape(rect14);
+  graphics.strokeRectShape(rect15);
+  graphics.strokeRectShape(rect16);
+
 
   this.ball1 = this.add.follower(path, 0, 275, 'enemy');
   this.ball1.setScale(.3);
