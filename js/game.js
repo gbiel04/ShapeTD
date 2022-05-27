@@ -42,9 +42,31 @@ gameScene.create = function () {
   this.bg.setOrigin(0,0);
 
   //create players
-  //this.player = this.add.sprite(50, config.height/2, 'player');
+  this.player = this.add.sprite(50, config.height/2, 'player');
   //this.player.depth = 1;
-  //this.player.setScale(0.3);
+  this.player.setScale(0.3);
+  //this.player.setInteractive();
+  //this.player.on('clicked', this.clickHandler, this);
+
+  let emitter = new Phaser.Events.EventEmitter();
+  emitter.on('addImage', this.handler, this);
+        emitter.emit('addImage', 200, 300);
+        emitter.emit('addImage', 400, 300);
+        emitter.emit('addImage', 600, 300);
+
+  this.box = this.add.sprite(100, 100, 'heart');
+  this.box.setScale(.01);
+  this.box.setInteractive();
+  this.box.on('clicked', this.clickHandler, this);
+
+  this.input.on('gameobjectup', function (pointer, gameObject)
+        {
+            gameObject.emit('clicked', gameObject);
+        }, this);
+
+  //this.info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#000000' });
+  //this.timer = this.time.addEvent({ delay: 10000, callback: this.gameOver, callbackScope: this });
+
 
   //create health base
   this.health = this.add.sprite(135, 550, 'heart')
@@ -100,7 +122,8 @@ gameScene.create = function () {
 
   this.ball1 = this.add.follower(path, 0, 275, 'enemy');
   this.ball1.setScale(.3);
-  this.ball1.startFollow(4000);
+  this.ball1.startFollow(10000);
+  this.ball1.rotateToPath= true;
 
 };
 
@@ -109,12 +132,13 @@ gameScene.create = function () {
 // for each frame during game play.
 gameScene.update = function () {  
   //check for active pointer (left mouse click or touch press)
-  if(this.input.activePointer.isDown) {
-    this.player.x +=this.playerSpeed;
-  }
+  // if(this.input.activePointer.isDown) {
+  //   this.player.x +=this.playerSpeed;
+  // }
 
   // check if player overlaps the goal
   this.updateEnemies();
+  //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
 };
 
 //checks if two sprites intersect
@@ -159,8 +183,6 @@ gameScene.createEnemies = function(){
  
 }
 
-
-
 function getRandomInt(min, max){
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -177,6 +199,17 @@ function getRandomInt(min, max){
 
 // }
 
+gameScene.handler = function(x, y) 
+    {
+        this.add.sprite(x, y, 'player');
+    }
+
+gameScene.clickHandler = function(box)
+    {
+        box.off('clicked', this.clickHandler);
+        box.input.enabled = false;
+        box.setVisible(false);
+    }
 
 // set the configuration of the game
 let config = {
