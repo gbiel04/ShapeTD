@@ -42,30 +42,23 @@ gameScene.create = function () {
   this.bg.setOrigin(0,0);
 
   //create players
-  this.player = this.add.sprite(50, config.height/2, 'player');
+  //this.player = this.add.sprite(50, config.height/2, 'player');
   //this.player.depth = 1;
-  this.player.setScale(0.3);
+  //this.player.setScale(0.3);
   //this.player.setInteractive();
   //this.player.on('clicked', this.clickHandler, this);
 
-  let emitter = new Phaser.Events.EventEmitter();
-  emitter.on('addImage', this.handler, this);
-        emitter.emit('addImage', 200, 300);
-        emitter.emit('addImage', 400, 300);
-        emitter.emit('addImage', 600, 300);
+  // this.box = this.add.sprite(100, 100, 'heart');
+  // this.box.setScale(.01);
+  // this.box.setInteractive();
+  // this.box.on('clicked', this.clickHandler, this);
 
-  this.box = this.add.sprite(100, 100, 'heart');
-  this.box.setScale(.01);
-  this.box.setInteractive();
-  this.box.on('clicked', this.clickHandler, this);
+  // this.input.on('gameobjectup', function (pointer, gameObject)
+  //       {
+  //           gameObject.emit('clicked', gameObject);
+  //       }, this);
 
-  this.input.on('gameobjectup', function (pointer, gameObject)
-        {
-            gameObject.emit('clicked', gameObject);
-        }, this);
-
-  //this.info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#000000' });
-  //this.timer = this.time.addEvent({ delay: 10000, callback: this.gameOver, callbackScope: this });
+ 
 
 
   //create health base
@@ -75,10 +68,13 @@ gameScene.create = function () {
   this.createEnemies();
 
   //create heart for health
+  this.numHealth= 100;
   this.heart = this.add.sprite(650, config.height/12, 'heart');
   this.heart.setScale(0.01);
-  this.healthBar = this.add.text(550, config.height/16, 'health',{color: 'red'});
+  this.healthBar = this.add.text(550, config.height/16, '100',{color: 'red'});
   this.healthBar.setStroke('#fff', 1);
+  this.healthBar.setText('Health ' + this.numHealth);
+  
  
 
   //create path
@@ -100,6 +96,7 @@ gameScene.create = function () {
   path.lineTo(515, 350);
   path.lineTo(135, 350);
   path.lineTo(135, 550);
+  path.lineTo(300, 550);
 
   var rect = new Phaser.Geom.Rectangle(0, 265, 150 , 25);
   var rect2 = new Phaser.Geom.Rectangle(130, 180, 25 , 100);
@@ -151,6 +148,35 @@ gameScene.create = function () {
   this.ball1.setScale(.3);
   this.ball1.startFollow(10000);
   this.ball1.rotateToPath= true;
+
+  // var draw = false;
+
+  //   this.input.on('pointerdown', function (pointer) {
+
+  //       draw = true;
+
+  //   });
+
+  //   this.input.on('pointerup', function () {
+
+  //       draw = false;
+
+  //   });
+
+  //   this.input.on('pointermove', function (pointer) {
+
+  //       if (draw)
+  //       {
+  //           graphics.clear();
+  //           graphics.lineStyle(thickness, color, alpha);
+  //           graphics.strokeRect(pointer.downX, pointer.downY, pointer.x - pointer.downX, pointer.y - pointer.downY);
+  //       }
+
+  //   });
+
+
+
+
 
 };
 
@@ -204,8 +230,14 @@ gameScene.createEnemies = function(){
 
     if(checkOverlap(this.health, this.ball1)) {
         //console.log('goal reached');
-        this.scene.restart();
+        this.numHealth--;
+        this.healthBar.setText(' ' + this.numHealth );
+        
       }
+    if(this.numHealth < 1){
+      this.scene.restart();
+    }
+    
    
  
 }
@@ -226,17 +258,13 @@ function getRandomInt(min, max){
 
 // }
 
-gameScene.handler = function(x, y) 
-    {
-        this.add.sprite(x, y, 'player');
-    }
-
-gameScene.clickHandler = function(box)
-    {
-        box.off('clicked', this.clickHandler);
-        box.input.enabled = false;
-        box.setVisible(false);
-    }
+// gameScene.clickHandler = function(box)
+//     {
+//         box.off('clicked', this.clickHandler);
+//         box.input.enabled = false;
+//         box.setVisible(false);
+//         //box.x = pointer.x;
+//     }
 
 // set the configuration of the game
 let config = {
