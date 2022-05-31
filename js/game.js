@@ -78,25 +78,25 @@ gameScene.create = function () {
  
 
   //create path
-  var path = new Phaser.Curves.Path(0, 275);
+  this.path = new Phaser.Curves.Path(0, 275);
 
-  path.lineTo(140, 275);
-  path.lineTo(140, 195);
-  path.lineTo(255, 195);
-  path.lineTo(255, 460);   
-  path.lineTo(420, 460);
-  path.lineTo(420, 115);
-  path.lineTo(140, 115);
-  path.lineTo(140, 35);
-  path.lineTo(515, 35);
-  path.lineTo(515, 115);
-  path.lineTo(615, 115);
-  path.lineTo(615, 205);
-  path.lineTo(515, 205);
-  path.lineTo(515, 350);
-  path.lineTo(135, 350);
-  path.lineTo(135, 550);
-  path.lineTo(300, 550);
+  this.path.lineTo(140, 275);
+  this.path.lineTo(140, 195);
+  this.path.lineTo(255, 195);
+  this.path.lineTo(255, 460);   
+  this.path.lineTo(420, 460);
+  this.path.lineTo(420, 115);
+  this.path.lineTo(140, 115);
+  this.path.lineTo(140, 35);
+  this.path.lineTo(515, 35);
+  this.path.lineTo(515, 115);
+  this.path.lineTo(615, 115);
+  this.path.lineTo(615, 205);
+  this.path.lineTo(515, 205);
+  this.path.lineTo(515, 350);
+  this.path.lineTo(135, 350);
+  this.path.lineTo(135, 550);
+  this.path.lineTo(300, 550);
 
   var rect = new Phaser.Geom.Rectangle(0, 265, 150 , 25);
   var rect2 = new Phaser.Geom.Rectangle(130, 180, 25 , 100);
@@ -124,7 +124,7 @@ gameScene.create = function () {
 
   var graphics = this.add.graphics();
   graphics.lineStyle(1, 0xffffff, 1);
-  path.draw(graphics, 64);
+  this.path.draw(graphics, 64);
 
   graphics.strokeRectShape(rect);
   graphics.strokeRectShape(rect2);
@@ -144,39 +144,49 @@ gameScene.create = function () {
   graphics.strokeRectShape(rect16);
 
 
-  this.ball1 = this.add.follower(path, 0, 275, 'enemy');
+  this.ball1 = this.add.follower(this.path, 0, 275, 'enemy');
   this.ball1.setScale(.3);
   this.ball1.startFollow(10000);
   this.ball1.rotateToPath= true;
+  //this.ball1.setTexture('player');
 
-  // var draw = false;
+  // this.ba = this.add.sprite(20,20,'player');
+  // this.ba.setInteractive();
 
-  //   this.input.on('pointerdown', function (pointer) {
+  // this.draw = false;
 
-  //       draw = true;
+  //   this.input.on('pointerdown', function (pointer,gameObject) {
+
+  //       this.draw = true;
 
   //   });
 
   //   this.input.on('pointerup', function () {
 
-  //       draw = false;
+  //       this.draw = false;
 
   //   });
 
-  //   this.input.on('pointermove', function (pointer) {
-
-  //       if (draw)
+  //   this.input.on('pointermove', function (pointer, gameObject) {
+  //       if (this.draw)
   //       {
-  //           graphics.clear();
-  //           graphics.lineStyle(thickness, color, alpha);
-  //           graphics.strokeRect(pointer.downX, pointer.downY, pointer.x - pointer.downX, pointer.y - pointer.downY);
+  //         ba.setVisable(true);
   //       }
 
   //   });
 
+    this.redBloon = {
+      color: 'player',
+      health: 5,
+      startX: 0,
+      startY: 275,
+      bloonArr: [],
+    };
 
+    this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
+    this.ball2.startFollow(15000);
 
-
+    this.createEnemies(this.redBloon,3);
 
 };
 
@@ -201,7 +211,15 @@ function checkOverlap(spriteA, spriteB) {
   return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
 };
 
-gameScene.createEnemies = function(){
+gameScene.createEnemies = function(bloonType, numBloon){
+  let followTime = 20000;
+  for(let i = 0; i < numBloon; i++){
+    let bloon = this.add.follower(this.path, bloonType.startX, bloonType.startY, bloonType.color);
+    bloonType.bloonArr.push(bloon);
+    bloon.startFollow(followTime);
+    followTime += 1000;
+  }
+
 //for(let i = 0; i < this.enemyCount; i++){
   //let enemy = this.add.sprite(0,0,'enemy');
   //this.enemies.push(enemy);
@@ -241,6 +259,11 @@ gameScene.createEnemies = function(){
    
  
 }
+
+
+
+
+
 
 function getRandomInt(min, max){
   min = Math.ceil(min);
