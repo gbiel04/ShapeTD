@@ -144,36 +144,36 @@ gameScene.create = function () {
   graphics.strokeRectShape(rect16);
 
 
-  this.ball1 = this.add.follower(this.path, 0, 275, 'enemy');
-  this.ball1.setScale(.3);
-  this.ball1.startFollow(10000);
-  this.ball1.rotateToPath= true;
-  //this.ball1.setTexture('player');
+  // this.ball1 = this.add.follower(this.path, 0, 275, 'enemy');
+  // this.ball1.setScale(.3);
+  // this.ball1.startFollow(10000);
+  // this.ball1.rotateToPath= true;
+  // this.ball1.setTexture('player');
 
   // this.ba = this.add.sprite(20,20,'player');
   // this.ba.setInteractive();
 
-  // this.draw = false;
+  //   this.ba.input.on('pointerdown', function (pointer,gameObject) {
 
-  //   this.input.on('pointerdown', function (pointer,gameObject) {
-
-  //       this.draw = true;
+  //       this.ba.setVisable(true);
 
   //   });
 
-  //   this.input.on('pointerup', function () {
+  //   this.ba.input.on('pointerup', function () {
 
-  //       this.draw = false;
+  //     this.ba.setVisable(false);
 
   //   });
 
-  //   this.input.on('pointermove', function (pointer, gameObject) {
-  //       if (this.draw)
-  //       {
+  //   this.ba.input.on('pointermove', function (pointer, gameObject) {   
   //         ba.setVisable(true);
-  //       }
+  //   }
+  // );
 
-  //   });
+    
+
+
+
 
     this.redBloon = {
       color: 'player',
@@ -181,10 +181,12 @@ gameScene.create = function () {
       startX: 0,
       startY: 275,
       bloonArr: [],
+      damage : 5,
     };
 
-    this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
-    this.ball2.startFollow(15000);
+    // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
+    // this.ball2.startFollow(15000);
+    // 
 
     this.createEnemies(this.redBloon,3);
 
@@ -212,74 +214,42 @@ function checkOverlap(spriteA, spriteB) {
 };
 
 gameScene.createEnemies = function(bloonType, numBloon){
-  let followTime = 20000;
+  let followTime = 10000;
   for(let i = 0; i < numBloon; i++){
     let bloon = this.add.follower(this.path, bloonType.startX, bloonType.startY, bloonType.color);
     bloonType.bloonArr.push(bloon);
+    bloon.setScale(0.3);
     bloon.startFollow(followTime);
+    bloon.rotateToPath = true;
     followTime += 1000;
   }
-
-//for(let i = 0; i < this.enemyCount; i++){
-  //let enemy = this.add.sprite(0,0,'enemy');
-  //this.enemies.push(enemy);
-  //console.log(this.enemies);
-
-  //enemy.x = this.enemySpawnX + (this.enemySpacing*i);
-  //enemy.y = getRandomInt(this.enemyMinY, this.enemyMaxY);
-  
-  //enemy.y = config.height/2;
-  //enemy.flipX =true;
-  //enemy.setScale(0.6);
-  //enemy.speed = this.enemySpeed;
-  //}
 }
 
  gameScene.updateEnemies = function(){
-  /*for(let i = 0; i < this.enemies.length; i++){
-    let enemy = this.enemies[i];
-    enemy.y += enemy.speed;
-    let hitBottom = enemy.y >= this.enemyMaxY;
-    let hitTop = enemy.y <= this.enemyMinY;
+  for(let i = 0; i < this.redBloon.bloonArr.length; i++){
+    let enemy = this.redBloon.bloonArr[i];
 
-    if (hitBottom || hitTop) {
-      enemy.speed *= -1;
-    }}*/ 
-
-    if(checkOverlap(this.health, this.ball1)) {
-        //console.log('goal reached');
-        this.numHealth--;
-        this.healthBar.setText(' ' + this.numHealth );
-        
-      }
+    if(checkOverlap(this.health, enemy)) {
+      //console.log('goal reached');
+      this.numHealth -= this.redBloon.damage;
+      enemy.setActive(false);
+      enemy.setX(800);
+      enemy.setY(50);
+      enemy.setVisible(false);
+      this.healthBar.setText(' ' + this.numHealth );
+      
+    }
     if(this.numHealth < 1){
       this.scene.restart();
     }
-    
-   
- 
+  } 
 }
-
-
-
-
-
 
 function getRandomInt(min, max){
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random()*(max-min+1))+ min;
 }
-
-// function attack(range, enemyArr){
-//   for(i = 0; i<enemyArr.length; i++){
-
-//   }
-  
-
-
-
-// }
 
 // gameScene.clickHandler = function(box)
 //     {
