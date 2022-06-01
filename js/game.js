@@ -171,6 +171,13 @@ gameScene.create = function () {
   // );
 
     
+    this.input.on('pointerdown', function (pointer) {
+
+        console.log(this.game.loop.frame, 'down B');
+
+        this.add.sprite(pointer.x, pointer.y, 'enemy');
+
+    }, this);
 
 
 
