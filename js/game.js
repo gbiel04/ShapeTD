@@ -31,6 +31,7 @@ gameScene.preload = function (){
   this.load.image('enemy', 'assets/dragon.png');
   this.load.image('goal', 'assets/treasure.png');
   this.load.image('heart', 'assets/heart.png');
+  this.load.image('darts', 'assets/ironman.png');
 };
 var timer;
 // ============ (3) create ==================
@@ -40,26 +41,6 @@ gameScene.create = function () {
   //create background
   this.bg = this.add.sprite(0, 0, 'bgr');
   this.bg.setOrigin(0,0);
-
-  //create players
-  //this.player = this.add.sprite(50, config.height/2, 'player');
-  //this.player.depth = 1;
-  //this.player.setScale(0.3);
-  //this.player.setInteractive();
-  //this.player.on('clicked', this.clickHandler, this);
-
-  // this.box = this.add.sprite(100, 100, 'heart');
-  // this.box.setScale(.01);
-  // this.box.setInteractive();
-  // this.box.on('clicked', this.clickHandler, this);
-
-  // this.input.on('gameobjectup', function (pointer, gameObject)
-  //       {
-  //           gameObject.emit('clicked', gameObject);
-  //       }, this);
-
- 
-
 
   //create health base
   this.health = this.add.sprite(135, 550, 'heart')
@@ -134,34 +115,6 @@ gameScene.create = function () {
   graphics.strokeRectShape(rect15);
   graphics.strokeRectShape(rect16);
 
-
-  // this.ball1 = this.add.follower(this.path, 0, 275, 'enemy');
-  // this.ball1.setScale(.3);
-  // this.ball1.startFollow(10000);
-  // this.ball1.rotateToPath= true;
-  // this.ball1.setTexture('player');
-
-  // this.ba = this.add.sprite(20,20,'player');
-  // this.ba.setInteractive();
-
-  //   this.ba.input.on('pointerdown', function (pointer,gameObject) {
-
-  //       this.ba.setVisable(true);
-
-  //   });
-
-  //   this.ba.input.on('pointerup', function () {
-
-  //     this.ba.setVisable(false);
-
-  //   });
-
-  //   this.ba.input.on('pointermove', function (pointer, gameObject) {   
-  //         ba.setVisable(true);
-  //   }
-  // );
-
-    
     this.input.on('pointerdown', function (pointer) {
 
         console.log(this.game.loop.frame, 'down B');
@@ -170,27 +123,24 @@ gameScene.create = function () {
 
     }, this);
 
-
-
     this.redBloon = {
       color: 'player',
       health: 5,
       startX: 0,
       startY: 275,
       bloonArr: [],
+      healthArr: [],
       damage : 5,
     };
 
     this.hero = {
       color: 'player',
-      health: 5,
-      startX: 0,
-      startY: 275,
       heroArr: [],
+      dartArr: [],
       damage : 5,
+      shootSpeed : 4
+
     };
-
-
 
     this.blueBloon = {
       color: 'player',
@@ -198,6 +148,7 @@ gameScene.create = function () {
       startX: 0,
       startY: 275,
       bloonArr: [],
+      healthArr: [],
       damage : 10,
     };
 
@@ -207,34 +158,21 @@ gameScene.create = function () {
       startX: 0,
       startY: 275,
       bloonArr: [],
+      healthArr: [],
       damage : 25,
     };
 
     // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
     // this.ball2.startFollow(15000);
-    // 
-    
-    
-   
 
-    this.createEnemies(this.blackBloon, 1);
+    this.createEnemies(this.blackBloon, 3);
 
-
-
-
-
-
+};
 
 // ============ (4) update ==================
 // After setup is complete, update is called on a loop 
 // for each frame during game play.
-gameScene.update = function () {  
-
-
-
-
-
-  
+gameScene.update = function () {    
   // check if player overlaps the goal
   this.updateEnemies();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
@@ -253,7 +191,9 @@ gameScene.createEnemies = function(bloonType, numBloon){
   let followTime = 10000;
   for(let i = 0; i < numBloon; i++){
     let bloon = this.add.follower(this.path, bloonType.startX, bloonType.startY, bloonType.color);
+    let hp = bloonType.health;
     bloonType.bloonArr.push(bloon);
+    bloonType.healthArr.push(hp)
     bloon.setScale(0.3);
     bloon.startFollow(followTime);
     bloon.rotateToPath = true;
@@ -309,12 +249,69 @@ for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
     enemy.setY(50);
     enemy.setVisible(false);
     this.healthBar.setText(' ' + this.numHealth );
-    
   }
+
   if(this.numHealth < 1){
     this.scene.restart();
   }
-} }
+  } 
+}
+
+gameScene.updateHealth = function(){
+  for(let i = 0; i < this.redBloon.bloonArr.length; i++){
+    let enemy = this.redBloon.bloonArr[i];
+
+    if(checkOverlap(this.health, enemy)) {
+      //console.log('goal reached');
+      this.numHealth -= this.redBloon.damage;
+      enemy.setActive(false);
+      enemy.setX(800);
+      enemy.setY(50);
+      enemy.setVisible(false);
+      this.healthBar.setText(' ' + this.numHealth );
+      
+    }
+    if(this.numHealth < 1){
+      this.scene.restart();
+    }
+  } 
+    for(let i = 0; i < this.blueBloon.bloonArr.length; i++){
+    let enemy = this.blueBloon.bloonArr[i];
+
+    if(checkOverlap(this.health, enemy)) {
+      //console.log('goal reached');
+      this.numHealth -= this.blueBloon.damage;
+      enemy.setActive(false);
+      enemy.setX(800);
+      enemy.setY(50);
+      enemy.setVisible(false);
+      this.healthBar.setText(' ' + this.numHealth );
+      
+    }
+    if(this.numHealth < 1){
+      this.scene.restart();
+    }
+  }
+
+
+for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
+  let enemy = this.blackBloon.bloonArr[i];
+
+  if(checkOverlap(this.health, enemy)) {
+    //console.log('goal reached');
+    this.numHealth -= this.blackBloon.damage;
+    enemy.setActive(false);
+    enemy.setX(800);
+    enemy.setY(50);
+    enemy.setVisible(false);
+    this.healthBar.setText(' ' + this.numHealth );
+  }
+
+  if(this.numHealth < 1){
+    this.scene.restart();
+  }
+  } 
+}
 
 
 function getRandomInt(min, max){
@@ -323,22 +320,6 @@ function getRandomInt(min, max){
   return Math.floor(Math.random()*(max-min+1))+ min;
 }
 
-
-
-
-
-
-
-
-
-
-// gameScene.clickHandler = function(box)
-//     {
-//         box.off('clicked', this.clickHandler);
-//         box.input.enabled = false;
-//         box.setVisible(false);
-//         //box.x = pointer.x;
-//     }
 
 // set the configuration of the game
 let config = {
