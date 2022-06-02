@@ -77,8 +77,6 @@ gameScene.create = function () {
   this.healthBar = this.add.text(550, config.height/16, '100',{color: 'red'});
   this.healthBar.setStroke('#fff', 1);
   this.healthBar.setText('Health ' + this.numHealth);
-  
- 
 
   //create path
   this.path = new Phaser.Curves.Path(0, 275);
@@ -115,15 +113,8 @@ gameScene.create = function () {
   var rect12 = new Phaser.Geom.Rectangle(600, 100, 25 , 110);
   var rect13 = new Phaser.Geom.Rectangle(500, 190, 125 , 25);
   var rect14 = new Phaser.Geom.Rectangle(495, 190, 30 , 180);
-  
   var rect15 = new Phaser.Geom.Rectangle(125, 340, 400 , 30);
-  
   var rect16 = new Phaser.Geom.Rectangle(120, 340, 30 , 200);
-
-
-
-
-
 
   var graphics = this.add.graphics();
   graphics.lineStyle(1, 0xffffff, 1);
@@ -194,6 +185,17 @@ gameScene.create = function () {
       speed : 8000,
     };
 
+    this.hero = {
+      color: 'player',
+      health: 5,
+      startX: 0,
+      startY: 275,
+      heroArr: [],
+      damage : 5,
+    };
+
+
+
     this.blueBloon = {
       color: 'bluebloon',
       health: 10,
@@ -227,7 +229,7 @@ gameScene.create = function () {
 
 
 
-};
+
 
 // ============ (4) update ==================
 // After setup is complete, update is called on a loop 
