@@ -229,7 +229,7 @@ gameScene.create = function () {
 
 
 
-
+  };
 
 // ============ (4) update ==================
 // After setup is complete, update is called on a loop 
