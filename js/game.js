@@ -31,6 +31,9 @@ gameScene.preload = function (){
   this.load.image('enemy', 'assets/dragon.png');
   this.load.image('goal', 'assets/treasure.png');
   this.load.image('heart', 'assets/heart.png');
+  this.load.image('redbloon', 'assets/nazibloonred.png');
+  this.load.image('bluebloon', 'assets/nazibloonsblue.png');
+  this.load.image('blackbloon', 'assets/nazibloonblack.png');
 };
 var timer;
 // ============ (3) create ==================
@@ -182,30 +185,33 @@ gameScene.create = function () {
 
 
     this.redBloon = {
-      color: 'player',
+      color: 'redbloon',
       health: 5,
       startX: 0,
       startY: 275,
       bloonArr: [],
       damage : 5,
+      speed : 8000,
     };
 
     this.blueBloon = {
-      color: 'player',
+      color: 'bluebloon',
       health: 10,
       startX: 0,
       startY: 275,
       bloonArr: [],
       damage : 10,
+      speed : 6000,
     };
 
     this.blackBloon = {
-      color: 'player',
+      color: 'blackbloon',
       health: 25,
       startX: 0,
       startY: 275,
       bloonArr: [],
       damage : 25,
+      speed : 17000,
     };
 
     // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
@@ -215,8 +221,8 @@ gameScene.create = function () {
     
    
 
-    this.createEnemies(this.blackBloon, 1);
-
+    this.createEnemies(this.blackBloon, 5);
+    this.createEnemies(this.blueBloon, 3);
 
 
 
@@ -248,14 +254,16 @@ function checkOverlap(spriteA, spriteB) {
 
 //create rounds of enemies
 gameScene.createEnemies = function(bloonType, numBloon){
-  let followTime = 10000;
+  // var followTime = bloonType.speed;
   for(let i = 0; i < numBloon; i++){
     let bloon = this.add.follower(this.path, bloonType.startX, bloonType.startY, bloonType.color);
     bloonType.bloonArr.push(bloon);
-    bloon.setScale(0.3);
+    bloon.setScale(0.8);
+    bloon.flipX = true;
+    var followTime = bloonType.speed;
     bloon.startFollow(followTime);
     bloon.rotateToPath = true;
-    followTime += 1000;
+    bloonType.speed += 1000;
   }
 }
 
