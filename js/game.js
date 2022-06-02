@@ -124,7 +124,6 @@ gameScene.create = function () {
  
         let monkey = this.add.sprite(pointer.x, pointer.y, 'enemy');
 
-
     }, this);
 
     this.redBloon = {
