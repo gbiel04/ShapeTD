@@ -32,7 +32,7 @@ gameScene.preload = function (){
   this.load.image('goal', 'assets/treasure.png');
   this.load.image('heart', 'assets/heart.png');
 };
-
+var timer;
 // ============ (3) create ==================
 // create is called once when preload is complete. 
 // Create your sprite objects and display them 
@@ -172,7 +172,6 @@ gameScene.create = function () {
 
 
 
-
     this.redBloon = {
       color: 'player',
       health: 5,
@@ -191,23 +190,51 @@ gameScene.create = function () {
       damage : 5,
     };
 
+
+
+    this.blueBloon = {
+      color: 'player',
+      health: 10,
+      startX: 0,
+      startY: 275,
+      bloonArr: [],
+      damage : 10,
+    };
+
+    this.blackBloon = {
+      color: 'player',
+      health: 25,
+      startX: 0,
+      startY: 275,
+      bloonArr: [],
+      damage : 25,
+    };
+
     // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
     // this.ball2.startFollow(15000);
     // 
+    
+    
+   
 
-    this.createEnemies(this.redBloon,3);
+    this.createEnemies(this.blackBloon, 1);
 
-};
+
+
+
+
+
 
 // ============ (4) update ==================
 // After setup is complete, update is called on a loop 
 // for each frame during game play.
 gameScene.update = function () {  
-  //check for active pointer (left mouse click or touch press)
-  // if(this.input.activePointer.isDown) {
-  //   this.player.x +=this.playerSpeed;
-  // }
 
+
+
+
+
+  
   // check if player overlaps the goal
   this.updateEnemies();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
@@ -220,6 +247,8 @@ function checkOverlap(spriteA, spriteB) {
   return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
 };
 
+
+//create rounds of enemies
 gameScene.createEnemies = function(bloonType, numBloon){
   let followTime = 10000;
   for(let i = 0; i < numBloon; i++){
@@ -250,13 +279,58 @@ gameScene.createEnemies = function(bloonType, numBloon){
       this.scene.restart();
     }
   } 
-}
+    for(let i = 0; i < this.blueBloon.bloonArr.length; i++){
+    let enemy = this.blueBloon.bloonArr[i];
+
+    if(checkOverlap(this.health, enemy)) {
+      //console.log('goal reached');
+      this.numHealth -= this.blueBloon.damage;
+      enemy.setActive(false);
+      enemy.setX(800);
+      enemy.setY(50);
+      enemy.setVisible(false);
+      this.healthBar.setText(' ' + this.numHealth );
+      
+    }
+    if(this.numHealth < 1){
+      this.scene.restart();
+    }
+  }
+
+
+for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
+  let enemy = this.blackBloon.bloonArr[i];
+
+  if(checkOverlap(this.health, enemy)) {
+    //console.log('goal reached');
+    this.numHealth -= this.blackBloon.damage;
+    enemy.setActive(false);
+    enemy.setX(800);
+    enemy.setY(50);
+    enemy.setVisible(false);
+    this.healthBar.setText(' ' + this.numHealth );
+    
+  }
+  if(this.numHealth < 1){
+    this.scene.restart();
+  }
+} }
+
 
 function getRandomInt(min, max){
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random()*(max-min+1))+ min;
 }
+
+
+
+
+
+
+
+
+
 
 // gameScene.clickHandler = function(box)
 //     {
