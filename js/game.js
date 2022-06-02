@@ -123,6 +123,12 @@ gameScene.create = function () {
 
  
         let monkey = this.add.sprite(pointer.x, pointer.y, 'enemy');
+        let dart = this.add.sprite(pointer.x, pointer.y, 'darts');
+        // dart.setVisible(false);
+        dart.setScale(.4);
+        this.hero.heroArr.push(monkey);
+        this.hero.dartArr.push(dart);
+
 
     }, this);
 
