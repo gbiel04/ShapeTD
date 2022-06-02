@@ -129,13 +129,13 @@ gameScene.create = function () {
 
     this.redBloon = {
       color: 'redbloon',
-      health: 5,
+      health: 1,
       startX: 0,
       startY: 275,
       bloonArr: [],
       healthArr: [],
       damage : 5,
-      speed : 8000,
+      speed : 18000,
     };
 
     this.hero = {
@@ -171,17 +171,19 @@ gameScene.create = function () {
 
     // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
     // this.ball2.startFollow(15000);
-    // 
+    //
     
     
    
 
-    this.createEnemies(this.blackBloon, 5);
-    this.createEnemies(this.blueBloon, 3);
+    //this.createEnemies(this.blackBloon, 5);
+    //this.createEnemies(this.blueBloon, 3);
 
+    this.createEnemies(this.redBloon, 3);
 
-
-    this.createEnemies(this.blackBloon, 3);
+   // this.createEnemies(this.blackBloon, 3);
+    this.dart = this.add.sprite(125,340, 'heart');
+    this.dart.setScale(.01);
 
 };
 
@@ -191,6 +193,7 @@ gameScene.create = function () {
 gameScene.update = function () {    
   // check if player overlaps the goal
   this.updateEnemies();
+  this.updateHealth();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
 };
 
@@ -209,6 +212,7 @@ gameScene.createEnemies = function(bloonType, numBloon){
     let bloon = this.add.follower(this.path, bloonType.startX, bloonType.startY, bloonType.color);
     let hp = bloonType.health;
     bloonType.bloonArr.push(bloon);
+    bloonType.healthArr.push(hp);
     bloon.setScale(0.8);
     bloon.flipX = true;
     var followTime = bloonType.speed;
@@ -276,58 +280,16 @@ for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
 
 gameScene.updateHealth = function(){
   for(let i = 0; i < this.redBloon.bloonArr.length; i++){
-    let enemy = this.redBloon.bloonArr[i];
-
-    if(checkOverlap(this.health, enemy)) {
-      //console.log('goal reached');
-      this.numHealth -= this.redBloon.damage;
-      enemy.setActive(false);
-      enemy.setX(800);
-      enemy.setY(50);
-      enemy.setVisible(false);
-      this.healthBar.setText(' ' + this.numHealth );
-      
+    if(checkOverlap(this.dart, this.redBloon.bloonArr[i])) {
+      this.redBloon.healthArr[i] -= this.hero.damage;
     }
-    if(this.numHealth < 1){
-      this.scene.restart();
+    if(this.redBloon.healthArr[i] < 1){
+      this.redBloon.bloonArr[i].setActive(false);
+      this.redBloon.bloonArr[i].setVisible(false);
+      this.redBloon.bloonArr[i].setX(800);
+      this.redBloon.bloonArr[i].setY(200);
     }
-  } 
-    for(let i = 0; i < this.blueBloon.bloonArr.length; i++){
-    let enemy = this.blueBloon.bloonArr[i];
-
-    if(checkOverlap(this.health, enemy)) {
-      //console.log('goal reached');
-      this.numHealth -= this.blueBloon.damage;
-      enemy.setActive(false);
-      enemy.setX(800);
-      enemy.setY(50);
-      enemy.setVisible(false);
-      this.healthBar.setText(' ' + this.numHealth );
-      
-    }
-    if(this.numHealth < 1){
-      this.scene.restart();
-    }
-  }
-
-
-for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
-  let enemy = this.blackBloon.bloonArr[i];
-
-  if(checkOverlap(this.health, enemy)) {
-    //console.log('goal reached');
-    this.numHealth -= this.blackBloon.damage;
-    enemy.setActive(false);
-    enemy.setX(800);
-    enemy.setY(50);
-    enemy.setVisible(false);
-    this.healthBar.setText(' ' + this.numHealth );
-  }
-
-  if(this.numHealth < 1){
-    this.scene.restart();
-  }
-  } 
+  }  
 }
 
 
