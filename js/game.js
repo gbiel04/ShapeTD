@@ -32,7 +32,7 @@ gameScene.preload = function (){
   this.load.image('goal', 'assets/treasure.png');
   this.load.image('heart', 'assets/heart.png');
 };
-
+var timer;
 // ============ (3) create ==================
 // create is called once when preload is complete. 
 // Create your sprite objects and display them 
@@ -213,11 +213,9 @@ gameScene.create = function () {
     // 
     
     
-    // this.createEnemies(this.blackBloon, 1);
    
 
     this.createEnemies(this.blackBloon, 1);
-
 
 
 
@@ -325,9 +323,6 @@ function getRandomInt(min, max){
 
 
 
-if(this.check + 3000 < game.time.now){
-  this.scene.restart();
-}
 
 
 
