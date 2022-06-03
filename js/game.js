@@ -22,7 +22,7 @@ gameScene.init = function (){
   
 };
 
-// ============ (2) preload =================
+// ============================== (2) preload ==========================================
 // preload is used to load all of your assets to memory. 
 // All your images, sounds, and other files will be ready. 
 gameScene.preload = function (){
@@ -31,15 +31,17 @@ gameScene.preload = function (){
   this.load.image('enemy', 'assets/dragon.png');
   this.load.image('goal', 'assets/treasure.png');
   this.load.image('heart', 'assets/heart.png');
-  this.load.image('darts', 'assets/ironman.png');
+  this.load.image('darts', 'assets/pacman.png');
   this.load.image('redbloon', 'assets/nazibloonred.png');
   this.load.image('bluebloon', 'assets/nazibloonsblue.png');
   this.load.image('blackbloon', 'assets/nazibloonblack.png');
 };
 var timer;
-// ============ (3) create ==================
-// create is called once when preload is complete. 
-// Create your sprite objects and display them 
+
+
+
+
+// ======================================= (3) create =======================================
 gameScene.create = function () {
   //create background
   this.bg = this.add.sprite(0, 0, 'bgr');
@@ -118,89 +120,88 @@ gameScene.create = function () {
   graphics.strokeRectShape(rect15);
   graphics.strokeRectShape(rect16);
 
-    this.input.on('pointerdown', function (pointer) {
+  this.hero = {
+    color: 'player',
+    heroArr: [],
+    dartArr: [],
+    damage : 5,
+    shootSpeed : 4
 
+  };
+  this.monkey1 = this.add.sprite(50, 50, 'enemy');
+  this.dart1 = this.add.sprite(50, 50, 'darts');
+  this.dart1.setScale(.1);
+  this.hero.heroArr.push(this.monkey1);
+  this.hero.dartArr.push(this.dart1);
+
+  this.input.on('pointerdown', function (pointer) {
+    let monkey = this.add.sprite(pointer.x, pointer.y, 'enemy');
+    let dart = this.add.sprite(pointer.x, pointer.y, 'darts');
+    // dart.setVisible(false);
+    dart.setScale(.05);
+    this.hero.heroArr.push(monkey);
+    this.hero.dartArr.push(dart);
+  }, this);
+
+  this.redBloon = {
+    color: 'redbloon',
+    health: 60,
+    startX: 0,
+    startY: 275,
+    bloonArr: [],
+    healthArr: [],
+    damage : 5,
+    speed : 18000,
+  };
 
  
-        let monkey = this.add.sprite(pointer.x, pointer.y, 'enemy');
-        let dart = this.add.sprite(pointer.x, pointer.y, 'darts');
-        // dart.setVisible(false);
-        dart.setScale(.4);
-        this.hero.heroArr.push(monkey);
-        this.hero.dartArr.push(dart);
 
+  this.blueBloon = {
+    color: 'bluebloon',
+    health: 10,
+    startX: 0,
+    startY: 275,
+    bloonArr: [],
+    healthArr: [],
+    damage : 10,
+    speed : 6000,
+  };
 
-    }, this);
+  this.blackBloon = {
+    color: 'blackbloon',
+    health: 25,
+    startX: 0,
+    startY: 275,
+    bloonArr: [],
+    healthArr: [],
+    damage : 25,
+    speed : 17000,
+  };
 
-    this.redBloon = {
-      color: 'redbloon',
-      health: 1,
-      startX: 0,
-      startY: 275,
-      bloonArr: [],
-      healthArr: [],
-      damage : 5,
-      speed : 18000,
-    };
-
-    this.hero = {
-      color: 'player',
-      heroArr: [],
-      dartArr: [],
-      damage : 5,
-      shootSpeed : 4
-
-    };
-
-    this.blueBloon = {
-      color: 'bluebloon',
-      health: 10,
-      startX: 0,
-      startY: 275,
-      bloonArr: [],
-      healthArr: [],
-      damage : 10,
-      speed : 6000,
-    };
-
-    this.blackBloon = {
-      color: 'blackbloon',
-      health: 25,
-      startX: 0,
-      startY: 275,
-      bloonArr: [],
-      healthArr: [],
-      damage : 25,
-      speed : 17000,
-    };
-
-    // this.ball2 = this.add.follower(this.path, this.redBloon.startX, this.redBloon.startY, this.redBloon.color);
-    // this.ball2.startFollow(15000);
-    //
-    
-    
-   
 
     //this.createEnemies(this.blackBloon, 5);
     //this.createEnemies(this.blueBloon, 3);
 
-    this.createEnemies(this.redBloon, 3);
+  this.createEnemies(this.redBloon, 3);
 
    // this.createEnemies(this.blackBloon, 3);
-    this.dart = this.add.sprite(125,340, 'heart');
-    this.dart.setScale(.01);
-
 };
 
-// ============ (4) update ==================
+
+
+
+// ============ (4) update =============================================================
 // After setup is complete, update is called on a loop 
 // for each frame during game play.
 gameScene.update = function () {    
   // check if player overlaps the goal
   this.updateEnemies();
-  this.updateHealth();
+  this.updateHealth2();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
 };
+
+
+//==========================Functions========================================
 
 //checks if two sprites intersect
 function checkOverlap(spriteA, spriteB) {
@@ -283,19 +284,29 @@ for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
   } 
 }
 
-gameScene.updateHealth = function(){
+gameScene.updateHealth = function(d){
   for(let i = 0; i < this.redBloon.bloonArr.length; i++){
-    if(checkOverlap(this.dart, this.redBloon.bloonArr[i])) {
-      this.redBloon.healthArr[i] -= this.hero.damage;
+    if(checkOverlap(d, this.redBloon.bloonArr[i])) {
+    this.redBloon.healthArr[i] -= this.hero.damage;
     }
     if(this.redBloon.healthArr[i] < 1){
       this.redBloon.bloonArr[i].setActive(false);
       this.redBloon.bloonArr[i].setVisible(false);
       this.redBloon.bloonArr[i].setX(800);
       this.redBloon.bloonArr[i].setY(200);
+  
     }
+      
   }  
 }
+
+gameScene.updateHealth2 = function(){
+  for(let i = 0; i < this.hero.dartArr.length; i++){
+    this.updateHealth(this.hero.dartArr[i]);
+    
+  }  
+}
+
 
 
 function getRandomInt(min, max){
