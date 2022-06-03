@@ -35,8 +35,10 @@ gameScene.preload = function (){
   this.load.image('redbloon', 'assets/nazibloonred.png');
   this.load.image('bluebloon', 'assets/nazibloonsblue.png');
   this.load.image('blackbloon', 'assets/nazibloonblack.png');
+  this.load.image('us', 'assets/ussoldier.png');
+
 };
-var timer;
+
 
 
 
@@ -46,6 +48,9 @@ gameScene.create = function () {
   //create background
   this.bg = this.add.sprite(0, 0, 'bgr');
   this.bg.setOrigin(0,0);
+
+  //adding phsyics
+
 
   //create health base
   this.health = this.add.sprite(135, 550, 'heart')
@@ -128,17 +133,25 @@ gameScene.create = function () {
     shootSpeed : 4
 
   };
-  this.monkey1 = this.add.sprite(50, 50, 'enemy');
-  this.dart1 = this.add.sprite(50, 50, 'darts');
-  this.dart1.setScale(.1);
-  this.hero.heroArr.push(this.monkey1);
-  this.hero.dartArr.push(this.dart1);
+  // this.monkey1 = this.add.sprite(300, 300, 'us');
+  // this.dart1 = this.add.sprite(50, 50, 'darts');
+  // this.dart1.setScale(.1);
+  // this.hero.heroArr.push(this.monkey1);
+  // this.hero.dartArr.push(this.dart1);
+  // this.physics.add.existing(this.dart1);
+  // this.physics.moveToObject(this.dart1, this.monkey1, 100);
+
+
 
   this.input.on('pointerdown', function (pointer) {
-    let monkey = this.add.sprite(pointer.x, pointer.y, 'enemy');
+    let monkey = this.add.sprite(pointer.x, pointer.y, 'us');
     let dart = this.add.sprite(pointer.x, pointer.y, 'darts');
+    this.physics.add.existing(dart);
+
     // dart.setVisible(false);
-    dart.setScale(.05);
+    monkey.setScale(0.4);
+    monkey.flipX = true;
+    dart.setScale(.009);
     this.hero.heroArr.push(monkey);
     this.hero.dartArr.push(dart);
   }, this);
@@ -198,6 +211,7 @@ gameScene.update = function () {
   this.updateEnemies();
   this.updateHealth2();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
+  this.attack(this.redBloon);
 };
 
 
@@ -210,6 +224,37 @@ function checkOverlap(spriteA, spriteB) {
   return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
 };
 
+
+gameScene.attack = function(bloonType){
+  for(let i = 0; i < bloonType.bloonArr.length; i++){
+    for(let j = 0; j < this.hero.heroArr.length; j++){
+      
+      let range  = 100;
+
+      if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
+        
+        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 50);
+
+
+    }
+     if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) > range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
+
+        this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+        this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+  }
+
+    
+
+    }
+  }}
+
+  // this.monkey1 = this.add.sprite(300, 300, 'us');
+  // this.dart1 = this.add.sprite(50, 50, 'darts');
+  // this.dart1.setScale(.1);
+  // this.hero.heroArr.push(this.monkey1);
+  // this.hero.dartArr.push(this.dart1);
+  // this.physics.add.existing(this.dart1);
+  // this.physics.moveToObject(this.dart1, this.monkey1, 100);
 
 //create rounds of enemies
 gameScene.createEnemies = function(bloonType, numBloon){
@@ -284,10 +329,11 @@ for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
   } 
 }
 
-gameScene.updateHealth = function(d){
+gameScene.updateHealth = function(d,heroI){
   for(let i = 0; i < this.redBloon.bloonArr.length; i++){
     if(checkOverlap(d, this.redBloon.bloonArr[i])) {
     this.redBloon.healthArr[i] -= this.hero.damage;
+    this.physics.moveToObject(d, this.hero.heroArr[heroI], 30);
     }
     if(this.redBloon.healthArr[i] < 1){
       this.redBloon.bloonArr[i].setActive(false);
@@ -302,7 +348,7 @@ gameScene.updateHealth = function(d){
 
 gameScene.updateHealth2 = function(){
   for(let i = 0; i < this.hero.dartArr.length; i++){
-    this.updateHealth(this.hero.dartArr[i]);
+    this.updateHealth(this.hero.dartArr[i],i);
     
   }  
 }
@@ -321,7 +367,13 @@ let config = {
   type: Phaser.AUTO, 
   width: 697,
   height: 502,
-  scene: gameScene
+  physics: {
+    default: 'arcade',
+    arcade: {
+        debug: false,
+    }},
+  scene: gameScene,
+
 };
 
 // create a new game, pass the configuration
