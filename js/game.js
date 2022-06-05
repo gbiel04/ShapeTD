@@ -240,40 +240,54 @@ function checkOverlap(spriteA, spriteB) {
 
 
 gameScene.attack = function(bloonType){
-  for(let i = 0; i < bloonType.bloonArr.length; i++){
-    for(let j = 0; j < this.hero.heroArr.length; j++){
+
+  //loop thru all the heros/monkeys
+  for(let j = 0; j < this.hero.heroArr.length; j++){
+    
+    //loop thru all bloons of a specific bloontype (red)?
+    //for(let i = 0; i < bloonType.bloonArr.length; i++){
+    //find closest bloon??
+    
+    //attack the first bloon only
+    let i = 0;
       
-      let range  = 250;
-
-      if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
-        
-        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 200);
-        
-
-        //if checkOverlap happens, subtract the health and send the dart back
-        // for(let i = 0; i<this.hero.dartArr.length; i++){
-        // if(checkOverlap(this.redBloon, this.hero.dartArr[i])){
-          
-        // }
-
-        // }
-
-
-        // this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-        // this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-        
-
+    //set a range to shoot when within 250 pixels
+    let range  = 250;
+    if(Math.abs(this.hero.heroArr[j].x - this.redBloon.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
+      
+      //move all the darts to "heatseek"
+      this.physics.moveToObject(this.hero.dartArr[j], this.redBloon.bloonArr[i], 200);
     }
-     if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) > range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
+    
+    console.log('Num of total hero darts: ' + this.hero.dartArr.length);
 
+    //check every dart to see if it has hit a bloon
+    for(let k = 0; k<this.hero.dartArr.length; k++){
+          
+      //check if dart overlaps with a bloon
+      if(checkOverlap(this.redBloon.bloonArr[i], this.hero.dartArr[k])){  
+        
+        //subtract health from the bloon
+        this.redBloon.bloonArr[i].health -= 10;
+        console.log("hit an enemy!");
+        console.log(this.redBloon.bloonArr[i].health);
+
+        //send the dart back to it's hero
         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-  }
-
-    
+      }
 
     }
-  }}
+
+    //send the dart back if it is within range of a specific bloon
+    // if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) > range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
+
+    //   this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+    //   this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+    // }
+
+  }
+}
 
   // this.monkey1 = this.add.sprite(300, 300, 'us');
   // this.dart1 = this.add.sprite(50, 50, 'darts');
@@ -296,7 +310,7 @@ gameScene.createEnemies = function(bloonType, numBloon){
     var followTime = bloonType.speed;
     bloon.startFollow(followTime);
     bloon.rotateToPath = true;
-    bloonType.speed += 1000;
+    bloonType.speed += 1000;    //creates a gap between a set of enemies
   }
 }
 
