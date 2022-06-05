@@ -36,6 +36,12 @@ gameScene.preload = function (){
   this.load.image('bluebloon', 'assets/nazibloonsblue.png');
   this.load.image('blackbloon', 'assets/nazibloonblack.png');
   this.load.image('us', 'assets/ussoldier.png');
+  this.load.image('money', 'assets/money.png');
+  this.load.image('bullet', 'assets/bullet.png');
+
+
+  this.load.audio('hit', '8bit.mp3');
+
 
 };
 
@@ -49,14 +55,14 @@ gameScene.create = function () {
   this.bg = this.add.sprite(0, 0, 'bgr');
   this.bg.setOrigin(0,0);
 
-  //adding phsyics
-
+  //adding sound
+  var hit = this.sound.add('hit');
 
   //create health base
   this.health = this.add.sprite(135, 550, 'heart')
   this.health.setScale(0.01);
   //create enemies
-  this.createEnemies();
+  //this.createEnemies();
 
   //create heart for health
   this.numHealth= 100;
@@ -65,6 +71,14 @@ gameScene.create = function () {
   this.healthBar = this.add.text(550, config.height/16, '100',{color: 'red'});
   this.healthBar.setStroke('#fff', 1);
   this.healthBar.setText('Health ' + this.numHealth);
+
+  //create money for money
+  this.money= 100;
+  this.dollar = this.add.sprite(650, config.height/7, 'money');
+  this.dollar.setScale(0.06);
+  this.moneyBar = this.add.text(550, config.height/9, '100',{color: 'blue'});
+  this.moneyBar.setStroke('#fff', 1);
+  this.moneyBar.setText('Money ' + this.numHealth);
 
   //create path
   this.path = new Phaser.Curves.Path(0, 275);
@@ -145,7 +159,7 @@ gameScene.create = function () {
 
   this.input.on('pointerdown', function (pointer) {
     let monkey = this.add.sprite(pointer.x, pointer.y, 'us');
-    let dart = this.add.sprite(pointer.x, pointer.y, 'darts');
+    let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
     this.physics.add.existing(dart);
 
     // dart.setVisible(false);
@@ -229,12 +243,25 @@ gameScene.attack = function(bloonType){
   for(let i = 0; i < bloonType.bloonArr.length; i++){
     for(let j = 0; j < this.hero.heroArr.length; j++){
       
-      let range  = 100;
+      let range  = 250;
 
       if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
         
-        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 50);
+        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 200);
+        
 
+        //if checkOverlap happens, subtract the health and send the dart back
+        // for(let i = 0; i<this.hero.dartArr.length; i++){
+        // if(checkOverlap(this.redBloon, this.hero.dartArr[i])){
+          
+        // }
+
+        // }
+
+
+        // this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+        // this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+        
 
     }
      if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) > range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
@@ -279,6 +306,7 @@ gameScene.createEnemies = function(bloonType, numBloon){
 
     if(checkOverlap(this.health, enemy)) {
       //console.log('goal reached');
+      //this.hit.play();
       this.numHealth -= this.redBloon.damage;
       enemy.setActive(false);
       enemy.setX(800);
@@ -331,9 +359,15 @@ for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
 
 gameScene.updateHealth = function(d,heroI){
   for(let i = 0; i < this.redBloon.bloonArr.length; i++){
+    for(let j = 0; j < this.hero.heroArr.length; j++){
+
     if(checkOverlap(d, this.redBloon.bloonArr[i])) {
-    this.redBloon.healthArr[i] -= this.hero.damage;
-    this.physics.moveToObject(d, this.hero.heroArr[heroI], 30);
+    this.redBloon.healthArr[i] -= this.hero.heroArr[j].damage;
+    
+    //return to monkey????
+        this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+        this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+
     }
     if(this.redBloon.healthArr[i] < 1){
       this.redBloon.bloonArr[i].setActive(false);
@@ -345,7 +379,7 @@ gameScene.updateHealth = function(d,heroI){
       
   }  
 }
-
+}
 gameScene.updateHealth2 = function(){
   for(let i = 0; i < this.hero.dartArr.length; i++){
     this.updateHealth(this.hero.dartArr[i],i);
