@@ -161,6 +161,7 @@ gameScene.create = function() {
         hero.setScale(0.4);
         hero.flipX = true;
         dart.setScale(.01);
+        dart.flipX = true;
         this.hero.heroArr.push(hero);
         this.hero.dartArr.push(dart);
     }, this);
@@ -220,7 +221,7 @@ gameScene.update = function() {
 };
 
 gameScene.printOuts = function() {
-    //console.log('totalEnemies: ' + this.enemyArr.length);
+    console.log('totalEnemies: ' + this.enemyArr.length);
     //console.log('Enemy0 health: ' + this.enemyArr[0].health);
     //console.log('Enemy0 loc: ' + this.enemyArr[0].x + ',' + this.enemyArr[0].y);
     //console.log('Enemy0 color: ' + this.enemyArr[0].color);
@@ -326,13 +327,15 @@ gameScene.updateHealth = function(dart, heroIndex) {
         }
 
         //hide enemy if health below 1
-        if (isNaN(en.health)) {
+        // if (isNaN(en.health)) 
+        if(en.health < 1){
             en.setActive(false);
             en.setVisible(false);
             en.setX(800);
             en.setY(200);
-            this.enemyArr.splice(i, i); //???
+            this.enemyArr.splice(i); //???
         }
+        // console.log(this.enemyArr.length);
     }
 }
 
@@ -357,6 +360,7 @@ gameScene.updateEnemies = function() {
             enemy.setX(800);
             enemy.setY(50);
             enemy.setVisible(false);
+            this.enemyArr.splice(i);
             this.healthBar.setText(' ' + this.numHealth);
 
         }
