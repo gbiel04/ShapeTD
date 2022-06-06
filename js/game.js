@@ -227,6 +227,7 @@ gameScene.update = function () {
   this.updateHealth2();
   //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
   this.attack(this.redBloon);
+  
 };
 
 
@@ -245,11 +246,15 @@ gameScene.attack = function(bloonType){
     for(let j = 0; j < this.hero.heroArr.length; j++){
       let range = 150;
       // if bloon is in range 
-       if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x)< range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
-        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 170);
+      if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x)< range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
+        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 300);
        }
        // otherwise
-       else{
+      if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x)> range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
+        this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+        this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+       }
+       if(Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x)> range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range){
         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
        }
@@ -279,7 +284,7 @@ gameScene.createEnemies = function(bloonType, numBloon){
     var followTime = bloonType.speed;
     bloon.startFollow(followTime);
     bloon.rotateToPath = true;
-    bloonType.speed += 1000;    //creates a gap between a set of enemies
+    bloonType.speed += 3000;    //creates a gap between a set of enemies
   }
 }
 
@@ -294,6 +299,7 @@ gameScene.createEnemies = function(bloonType, numBloon){
       enemy.setActive(false);
       enemy.setX(800);
       enemy.setY(50);
+      this.redBloon.bloonArr.splice(i,i);
       enemy.setVisible(false);
       this.healthBar.setText(' ' + this.numHealth );
       
@@ -357,6 +363,7 @@ gameScene.updateHealth = function(d,heroI){
       this.redBloon.bloonArr[i].setX(800);
       this.redBloon.bloonArr[i].setY(200);
       this.redBloon.bloonArr.splice(i,i);
+      
       
     }  
   }
