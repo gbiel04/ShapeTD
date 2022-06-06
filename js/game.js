@@ -143,7 +143,7 @@ gameScene.create = function () {
     color: 'player',
     heroArr: [],
     dartArr: [],
-    damage : 5,
+    damage : 1,
     shootSpeed : 4
 
   };
@@ -166,14 +166,14 @@ gameScene.create = function () {
     monkey.setScale(0.4);
     monkey.flipX = true;
     dart.flipX = true;
-    dart.setScale(.04);
+    dart.setScale(.01);
     this.hero.heroArr.push(monkey);
     this.hero.dartArr.push(dart);
   }, this);
 
   this.redBloon = {
     color: 'redbloon',
-    health: 60,
+    health: 1,
     startX: 0,
     startY: 275,
     bloonArr: [],
@@ -241,56 +241,20 @@ function checkOverlap(spriteA, spriteB) {
 
 
 gameScene.attack = function(bloonType){
-
-  //loop thru all the heros/monkeys
-  for(let j = 0; j < this.hero.heroArr.length; j++){
-    
-    //loop thru all bloons of a specific bloontype (red)?
-    //for(let i = 0; i < bloonType.bloonArr.length; i++){
-    //find closest bloon??
-    
-    //attack the first bloon only
-    let i = 0;
-      
-    //set a range to shoot when within 250 pixels
-    let range  = 150;
-    if(Math.abs(this.hero.heroArr[j].x - this.redBloon.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
-      this.hero.dartArr[j].setVisible(true);
-      //move all the darts to "heatseek"
-      this.physics.moveToObject(this.hero.dartArr[j], this.redBloon.bloonArr[i], 1000);
-    } else{
-      this.hero.dartArr[j].setVisible(false);
-      this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-      this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-    }
-    
-    console.log('Num of total hero darts: ' + this.hero.dartArr.length);
-
-    //check every dart to see if it has hit a bloon
-    for(let k = 0; k<this.hero.dartArr.length; k++){
-          
-      //check if dart overlaps with a bloon
-      if(checkOverlap(this.redBloon.bloonArr[i], this.hero.dartArr[k])){  
-        
-        //subtract health from the bloon
-        this.redBloon.bloonArr[i].health -= 10;
-        console.log("hit an enemy!");
-        console.log(this.redBloon.bloonArr[i].health);
-
-        //send the dart back to it's hero
+  for(let i = 0; i < bloonType.bloonArr.length; i++) {
+    for(let j = 0; j < this.hero.heroArr.length; j++){
+      let range = 150;
+      // if bloon is in range 
+       if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x)< range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
+        this.physics.moveToObject(this.hero.dartArr[j], bloonType.bloonArr[i], 170);
+       }
+       // otherwise
+       else{
         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-      }
-
+       }
+       console.log(j+ ' ' + i);
     }
-
-    //send the dart back if it is within range of a specific bloon
-    // if(Math.abs(this.hero.heroArr[j].x - bloonType.bloonArr[i].x) > range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) > range){
-
-    //   this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-    //   this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-    // }
-
   }
 }
 
@@ -338,66 +302,64 @@ gameScene.createEnemies = function(bloonType, numBloon){
       this.scene.restart();
     }
   } 
-    for(let i = 0; i < this.blueBloon.bloonArr.length; i++){
-    let enemy = this.blueBloon.bloonArr[i];
-
-    if(checkOverlap(this.health, enemy)) {
-      //console.log('goal reached');
-      this.numHealth -= this.blueBloon.damage;
-      enemy.setActive(false);
-      enemy.setX(800);
-      enemy.setY(50);
-      enemy.setVisible(false);
-      this.healthBar.setText(' ' + this.numHealth );
-      
-    }
-    if(this.numHealth < 1){
-      this.scene.restart();
-    }
-  }
-
-
-for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
-  let enemy = this.blackBloon.bloonArr[i];
+  for(let i = 0; i < this.blueBloon.bloonArr.length; i++){
+  let enemy = this.blueBloon.bloonArr[i];
 
   if(checkOverlap(this.health, enemy)) {
     //console.log('goal reached');
-    this.numHealth -= this.blackBloon.damage;
+    this.numHealth -= this.blueBloon.damage;
     enemy.setActive(false);
     enemy.setX(800);
     enemy.setY(50);
     enemy.setVisible(false);
     this.healthBar.setText(' ' + this.numHealth );
-  }
-
+    
+    }
   if(this.numHealth < 1){
     this.scene.restart();
+    }
   }
+
+
+  for(let i = 0; i < this.blackBloon.bloonArr.length; i++){
+    let enemy = this.blackBloon.bloonArr[i];
+
+    if(checkOverlap(this.health, enemy)) {
+      //console.log('goal reached');
+      this.numHealth -= this.blackBloon.damage;
+      enemy.setActive(false);
+      enemy.setX(800);
+      enemy.setY(50);
+      enemy.setVisible(false);
+      this.healthBar.setText(' ' + this.numHealth );
+    }
+
+    if(this.numHealth < 1){
+      this.scene.restart();
+    }
   } 
 }
 
+//Update health 1 and 2 checks if dart and bloon overlaps and takes away health from bloon
+// once dart overlaps bloon it goes back to hero
+// if  bloon health is less than 1 it teleprots bloon out of the map and set it invisible
 gameScene.updateHealth = function(d,heroI){
   for(let i = 0; i < this.redBloon.bloonArr.length; i++){
-    for(let j = 0; j < this.hero.heroArr.length; j++){
-
     if(checkOverlap(d, this.redBloon.bloonArr[i])) {
-    this.redBloon.healthArr[i] -= this.hero.heroArr[j].damage;
-    
-    //return to monkey????
-        this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-        this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-
-    }
+      this.redBloon.healthArr[i] -= this.hero.damage;
+    //return to monkey
+      this.hero.dartArr[heroI].setX(this.hero.heroArr[heroI].x);
+      this.hero.dartArr[heroI].setY(this.hero.heroArr[heroI].y);
+      }
     if(this.redBloon.healthArr[i] < 1){
       this.redBloon.bloonArr[i].setActive(false);
       this.redBloon.bloonArr[i].setVisible(false);
       this.redBloon.bloonArr[i].setX(800);
       this.redBloon.bloonArr[i].setY(200);
-  
-    }
+      this.redBloon.bloonArr.splice(i,i);
       
-  }  
-}
+    }  
+  }
 }
 gameScene.updateHealth2 = function(){
   for(let i = 0; i < this.hero.dartArr.length; i++){
@@ -405,7 +367,6 @@ gameScene.updateHealth2 = function(){
     
   }  
 }
-
 
 
 function getRandomInt(min, max){
