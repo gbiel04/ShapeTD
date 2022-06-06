@@ -158,7 +158,7 @@ gameScene.create = function() {
         this.physics.add.existing(dart);
 
         // dart.setVisible(false);
-        hero.setScale(0.4);
+        hero.setScale(0.2);
         hero.flipX = true;
         dart.setScale(.01);
         dart.flipX = true;
@@ -216,7 +216,13 @@ gameScene.update = function() {
     this.updateEnemies();
     this.updateHealth2();
     this.attack(this.redEnemy);
+
+    if(this.enemyArr.length < 1){
+        this.createEnemies(this.redEnemy, 3);
+    }
+
     this.printOuts();
+
     //this.info.setText('\nTime: ' + Math.floor(10000 - timer.getElapsed()));
 };
 
@@ -285,18 +291,28 @@ gameScene.attack = function(enemyType) {
             if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
                 this.physics.moveToObject(this.hero.dartArr[j], en, 300);
             }
+            else {
+                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            }
+            // else if(this.enemyArr.length < 1){
+            //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+            //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            //     console.log("I SHOULD BE WORKING");
+            // }
+
 
             // otherwise if the enemy is out of range of the hero, return the dart
-            if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
-                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-            }
+            // if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
+            //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+            //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            // }
 
-            //if the dart is out of range of the hero, return the dart
-            if (Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x) > range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range) {
-                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-            }
+            // //if the dart is out of range of the hero, return the dart
+            // if (Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x) > range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range) {
+            //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+            //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            // }
 
             //console.log(j + ' ' + i);
         }
@@ -333,7 +349,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
             en.setVisible(false);
             en.setX(800);
             en.setY(200);
-            this.enemyArr.splice(i); //???
+            this.enemyArr.splice(i, 1); //???
         }
         // console.log(this.enemyArr.length);
     }
@@ -360,7 +376,7 @@ gameScene.updateEnemies = function() {
             enemy.setX(800);
             enemy.setY(50);
             enemy.setVisible(false);
-            this.enemyArr.splice(i);
+            this.enemyArr.splice(i, 1);
             this.healthBar.setText(' ' + this.numHealth);
 
         }
