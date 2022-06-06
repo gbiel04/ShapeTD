@@ -165,7 +165,8 @@ gameScene.create = function () {
     // dart.setVisible(false);
     monkey.setScale(0.4);
     monkey.flipX = true;
-    dart.setScale(.009);
+    dart.flipX = true;
+    dart.setScale(.04);
     this.hero.heroArr.push(monkey);
     this.hero.dartArr.push(dart);
   }, this);
@@ -252,11 +253,15 @@ gameScene.attack = function(bloonType){
     let i = 0;
       
     //set a range to shoot when within 250 pixels
-    let range  = 250;
+    let range  = 150;
     if(Math.abs(this.hero.heroArr[j].x - this.redBloon.bloonArr[i].x) < range && Math.abs(this.hero.heroArr[j].y - bloonType.bloonArr[i].y) < range){
-      
+      this.hero.dartArr[j].setVisible(true);
       //move all the darts to "heatseek"
-      this.physics.moveToObject(this.hero.dartArr[j], this.redBloon.bloonArr[i], 200);
+      this.physics.moveToObject(this.hero.dartArr[j], this.redBloon.bloonArr[i], 1000);
+    } else{
+      this.hero.dartArr[j].setVisible(false);
+      this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+      this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
     }
     
     console.log('Num of total hero darts: ' + this.hero.dartArr.length);
