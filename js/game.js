@@ -175,7 +175,7 @@ gameScene.create = function() {
         startY: 275,
         color: 'red',
         health: 60,
-        damage: 5,
+        damage: 100,
         speed: 18000
     };
     //setup stats for a red Enemy
@@ -201,8 +201,11 @@ gameScene.create = function() {
         speed: 17000
     };
 
-    this.createEnemies(this.redEnemy, 3);
+    // this.createEnemies(this.redEnemy, 3);
 
+
+    this.keys = this.input.keyboard.addKeys('P, Q');
+    this.count = 0;
 };
 
 
@@ -216,10 +219,11 @@ gameScene.update = function() {
     this.updateEnemies();
     this.updateHealth2();
     this.attack(this.redEnemy);
+    this.gamePlay();
 
-    if(this.enemyArr.length < 1){
-        this.createEnemies(this.redEnemy, 3);
-    }
+    // if(this.enemyArr.length < 1){
+    //     this.createEnemies(this.redEnemy, 3);
+    // }
 
     this.printOuts();
 
@@ -243,6 +247,51 @@ function checkOverlap(spriteA, spriteB) {
     var boundsB = spriteB.getBounds();
     return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
 };
+gameScene.increase = function(){
+    this.count++;
+}
+
+
+
+//create rounds of gameplay
+
+gameScene.gamePlay = function(){
+
+
+    if(this.numHealth>1){
+        if(this.enemyArr.length < 1){
+
+            if(this.keys.P.isDown && this.count == 0){
+
+                this.createEnemies(this.redEnemy, 3);
+                this.increase();
+
+            }
+            else if(this.keys.P.isDown && this.count == 1){
+                this.createEnemies(this.redEnemy, 10);
+            }
+        
+
+
+        }
+    }
+    else{
+        let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
+        if(this.keys.Q.isDown){
+
+            this.scene.restart();
+
+        }
+
+    }
+}
+
+
+
+
+
+
+
 
 //create rounds of enemies
 gameScene.createEnemies = function(enemyType, numEnemies) {
@@ -291,10 +340,10 @@ gameScene.attack = function(enemyType) {
             if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
                 this.physics.moveToObject(this.hero.dartArr[j], en, 300);
             }
-            else {
-                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-            }
+        //   else {
+        //         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+        //         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+        //     }  
             // else if(this.enemyArr.length < 1){
             //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
             //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
@@ -303,10 +352,10 @@ gameScene.attack = function(enemyType) {
 
 
             // otherwise if the enemy is out of range of the hero, return the dart
-            // if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
-            //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-            //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-            // }
+            if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
+                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            }
 
             // //if the dart is out of range of the hero, return the dart
             // if (Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x) > range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range) {
@@ -380,9 +429,9 @@ gameScene.updateEnemies = function() {
             this.healthBar.setText(' ' + this.numHealth);
 
         }
-        if (this.numHealth < 1) {
-            this.scene.restart();
-        }
+        // if (this.numHealth < 1) {
+        //     this.scene.restart();
+        // }
     }
 }
 
