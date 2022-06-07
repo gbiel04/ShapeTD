@@ -49,6 +49,7 @@ gameScene.preload = function() {
     this.load.image('bullet', 'assets/bullet.png');
 
     this.load.audio('hit', 'assets/8bit.mp3');
+    this.load.audio('lost','assets/lost.mp3');
 };
 
 
@@ -60,8 +61,8 @@ gameScene.create = function() {
     this.bg.setOrigin(0, 0);
 
     //adding sound
-    var hit = this.sound.add('hit');
-
+    this.hit = this.sound.add('hit');
+this.lost = this.sound.add('lost');
     //create health base
     this.health = this.add.sprite(135, 550, 'heart')
     this.health.setScale(0.01);
@@ -153,6 +154,8 @@ gameScene.create = function() {
     };
 
     this.input.on('pointerdown', function(pointer) {
+
+        if(this.numHealth > 1){
         let hero = this.add.sprite(pointer.x, pointer.y, 'us');
         let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
         this.physics.add.existing(dart);
@@ -163,7 +166,10 @@ gameScene.create = function() {
         dart.setScale(.01);
         dart.flipX = true;
         this.hero.heroArr.push(hero);
-        this.hero.dartArr.push(dart);
+        this.hero.dartArr.push(dart);}
+        else{
+            this.lost.play();
+        }
     }, this);
 
 
@@ -275,8 +281,9 @@ gameScene.gamePlay = function(){
 
         }
     }
-    else{
+    if(this.numHealth<1){
         let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
+        // this.lost.play();
         if(this.keys.Q.isDown){
 
             this.scene.restart();
@@ -380,7 +387,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
 
         //check if the dart has hit an enemy
         if (checkOverlap(dart, en)) {
-
+            this.hit.play();
             //subtract health from the enemy
             let dam = this.hero.damage;
             en.loseHealth(dam);
