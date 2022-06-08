@@ -169,6 +169,7 @@ this.lost = this.sound.add('lost');
 
         if(this.numHealth > 1){
             if(this.money >=50){
+                
                 this.money -= 50;
                 let hero = this.add.sprite(pointer.x, pointer.y, 'us');
                 let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
@@ -241,6 +242,8 @@ gameScene.update = function() {
     this.updateEnemies();
     this.updateHealth2();
     this.attack(this.redEnemy);
+    // this.attack(this.blackEnemy);
+    // this.attack(this.blueEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
     this.noPath();
@@ -283,7 +286,8 @@ gameScene.gamePlay = function(){
 
                 this.createEnemies(this.redEnemy, 3);
                 this.increase();
-                this.money += 50;
+
+                    
             }
             else if(this.keys.P.isDown && this.count == 1){
                 this.createEnemies(this.redEnemy, 10);
@@ -427,6 +431,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
             en.setX(800);
             en.setY(200);
             this.enemyArr.splice(i, 1); //???
+            this.money += 15;
         }
         // console.log(this.enemyArr.length);
     }
