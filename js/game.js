@@ -42,8 +42,8 @@ gameScene.preload = function() {
     this.load.image('darts', 'assets/pacman.png');
     this.load.image('red', 'assets/nazibloonred.png');
     //this.load.image('redbloon', 'assets/nazibloonred.png');
-    //this.load.image('bluebloon', 'assets/nazibloonsblue.png');
-    //this.load.image('blackbloon', 'assets/nazibloonblack.png');
+    this.load.image('blue', 'assets/nazibloonsblue.png');
+    this.load.image('black', 'assets/nazibloonblack.png');
     this.load.image('us', 'assets/ussoldier.png');
     this.load.image('money', 'assets/money.png');
     this.load.image('bullet', 'assets/bullet.png');
@@ -87,6 +87,10 @@ this.lost = this.sound.add('lost');
     this.moneyBar = this.add.text(550, config.height / 9, '100', { color: 'blue' });
     this.moneyBar.setStroke('#fff', 1);
     // this.moneyBar.setText('Money ' + this.money);
+
+    //round counter
+    this.roundNum = 0;
+    this.round = this.add.text(50, config.height/14, this.roundNum, {fontSize: '30px', color: 'black'});
 
     //create path
     this.path = new Phaser.Curves.Path(0, 275);
@@ -197,8 +201,8 @@ this.lost = this.sound.add('lost');
         startX: 0,
         startY: 275,
         color: 'red',
-        health: 60,
-        damage: 100,
+        health: 8,
+        damage: 5,
         speed: 18000
     };
     //setup stats for a red Enemy
@@ -210,7 +214,7 @@ this.lost = this.sound.add('lost');
         color: 'blue',
         health: 10,
         damage: 10,
-        speed: 6000
+        speed: 11000
     };
     //setup stats for a red Enemy
     this.blackEnemy = {
@@ -242,8 +246,8 @@ gameScene.update = function() {
     this.updateEnemies();
     this.updateHealth2();
     this.attack(this.redEnemy);
-    // this.attack(this.blackEnemy);
-    // this.attack(this.blueEnemy);
+    this.attack(this.blackEnemy);
+    this.attack(this.blueEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
     this.noPath();
@@ -273,34 +277,6 @@ function checkOverlap(spriteA, spriteB) {
 };
 gameScene.increase = function(){
     this.count++;
-}
-
-
-
-//create rounds of gameplay
-
-gameScene.gamePlay = function(){
-    if(this.numHealth>1){
-        if(this.enemyArr.length < 1){
-            if(this.keys.P.isDown && this.count == 0){
-
-                this.createEnemies(this.redEnemy, 3);
-                this.increase();
-
-                    
-            }
-            else if(this.keys.P.isDown && this.count == 1){
-                this.createEnemies(this.redEnemy, 10);
-            }
-        }
-    }
-    if(this.numHealth<1){
-        let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
-        if(this.keys.Q.isDown){
-            this.scene.restart();
-        }
-
-    }
 }
 
 //create rounds of enemies
@@ -383,17 +359,17 @@ gameScene.attack = function(enemyType) {
 
 
             // otherwise if the enemy is out of range of the hero, return the dart
-            if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
-                this.hero.dartArr[j].setVisible(false);
-                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-            }
-
-            // //if the dart is out of range of the hero, return the dart
-            // if (Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x) > range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range) {
+            // if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
+            //     this.hero.dartArr[j].setVisible(false);
             //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
             //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
             // }
+
+            // //if the dart is out of range of the hero, return the dart
+            else if (Math.abs(this.hero.heroArr[j].x - this.hero.dartArr[j].x) > range || Math.abs(this.hero.heroArr[j].y - this.hero.dartArr[j].y) > range) {
+                this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+                this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            }
 
             //console.log(j + ' ' + i);
         }
@@ -431,7 +407,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
             en.setX(800);
             en.setY(200);
             this.enemyArr.splice(i, 1); //???
-            this.money += 15;
+            this.money += 10;
         }
         // console.log(this.enemyArr.length);
     }
@@ -473,6 +449,176 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//create rounds of gameplay
+gameScene.gamePlay = function(){
+    if(this.numHealth>1){
+        if(this.enemyArr.length < 1){
+//round 1
+if(this.keys.P.isDown && this.count == 0){
+this.round1();
+}       //question break
+else if(this.enemyArr.length < 1 && this.count == 1){
+this.increase();
+}   
+
+//round 2
+else if(this.keys.P.isDown && this.count == 2){
+this.round2();
+}    //question break       
+else if(this.enemyArr.length < 1 && this.count == 3){
+this.increase();
+}  
+
+//round 3
+if(this.keys.P.isDown && this.count == 4){
+this.round3();
+}       //question break
+else if(this.enemyArr.length < 1 && this.count == 5){
+this.increase(); 
+}
+
+//round 4
+if(this.keys.P.isDown && this.count == 6){
+this.round4();
+}       //question break
+else if(this.enemyArr.length < 1 && this.count == 7){
+this.increase(); }
+
+//round 5
+if(this.keys.P.isDown && this.count == 8){
+this.round5();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 9){
+this.increase();
+}
+
+//round 6
+if(this.keys.P.isDown && this.count == 10){
+this.round6();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 11){
+this.increase();
+}
+
+//round 7
+if(this.keys.P.isDown && this.count == 12){
+this.round7();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 13){
+this.increase();
+}
+
+//round 8
+if(this.keys.P.isDown && this.count == 14){
+this.round8();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 15){
+this.increase();
+}
+
+//round 9
+if(this.keys.P.isDown && this.count == 16){
+this.round9();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 17){
+this.increase();
+}
+
+//round 10
+if(this.keys.P.isDown && this.count == 18){
+this.round10();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 19){
+this.increase();
+}
+
+//round 11
+if(this.keys.P.isDown && this.count == 20){
+this.round11();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 121){
+this.increase();
+}
+
+
+    }}
+    
+    if(this.numHealth<1){
+        let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
+        if(this.keys.Q.isDown){
+            this.scene.restart();
+        }
+
+    }
+
+}
+
+
+
+
+
+
+gameScene.round1 = function(){
+    this.createEnemies(this.redEnemy, 5);
+    this.increase();
+    this.roundNum = 1;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round2 = function(){
+    this.createEnemies(this.redEnemy, 15);
+    this.increase();
+    this.roundNum = 2;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round3 = function(){
+    this.createEnemies(this.redEnemy, 10);
+    this.createEnemies(this.blueEnemy, 5);
+    this.increase();
+    this.roundNum = 3;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round4 = function(){
+    this.createEnemies(this.redEnemy, 25);
+    this.increase();
+    this.roundNum = 4;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round5 = function(){
+    this.createEnemies(this.blueEnemy, 12);
+    this.increase();
+    this.roundNum = 5;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round6 = function(){
+
+}
+gameScene.round7 = function(){
+
+}
+gameScene.round8 = function(){
+
+}
+gameScene.round9 = function(){
+
+}
+gameScene.round10 = function(){
+
+}
+gameScene.round11 = function(){
+
+}
+
 
 // set the configuration of the game
 let config = {
