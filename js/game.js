@@ -77,6 +77,9 @@ this.lost = this.sound.add('lost');
     this.healthBar.setStroke('#fff', 1);
     this.healthBar.setText('Health ' + this.numHealth);
 
+    //instructions
+    this.instructions = this.add.text(500, config.height - 30, 'P to start next round \n Q to restart', {fontSize: '15px', color: 'red'});
+
     //create money for money
     this.money = 100;
     this.dollar = this.add.sprite(650, config.height / 7, 'money');
