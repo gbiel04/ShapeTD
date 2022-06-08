@@ -109,7 +109,7 @@ this.lost = this.sound.add('lost');
     this.path.lineTo(300, 550);
 
     //Create rectangles for Path?
-    var rect = new Phaser.Geom.Rectangle(0, 265, 150, 25);
+    let rect = new Phaser.Geom.Rectangle(0, 265, 150, 25);
     var rect2 = new Phaser.Geom.Rectangle(130, 180, 25, 100);
     var rect3 = new Phaser.Geom.Rectangle(150, 180, 100, 25);
     var rect4 = new Phaser.Geom.Rectangle(240, 180, 25, 290);
@@ -125,6 +125,9 @@ this.lost = this.sound.add('lost');
     var rect14 = new Phaser.Geom.Rectangle(495, 190, 30, 180);
     var rect15 = new Phaser.Geom.Rectangle(125, 340, 400, 30);
     var rect16 = new Phaser.Geom.Rectangle(120, 340, 30, 200);
+
+
+
 
     var graphics = this.add.graphics();
     graphics.lineStyle(1, 0xffffff, 1);
@@ -147,6 +150,12 @@ this.lost = this.sound.add('lost');
     graphics.strokeRectShape(rect15);
     graphics.strokeRectShape(rect16);
 
+    this.road = {
+        roadArr: []
+    };
+    this.road.roadArr.push(rect);
+
+
     this.hero = {
         color: 'player',
         heroArr: [],
@@ -168,6 +177,7 @@ this.lost = this.sound.add('lost');
                 // dart.setVisible(false);
                 hero.setScale(0.2);
                 hero.flipX = true;
+                dart.setVisible(false);
                 dart.setScale(.01);
                 dart.flipX = true;
                 this.hero.heroArr.push(hero);
@@ -233,10 +243,8 @@ gameScene.update = function() {
     this.attack(this.redEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
-// this.noPath();
-    // if(this.enemyArr.length < 1){
-    //     this.createEnemies(this.redEnemy, 3);
-    // }
+    this.noPath();
+
 
     this.printOuts();
 
@@ -269,43 +277,27 @@ gameScene.increase = function(){
 //create rounds of gameplay
 
 gameScene.gamePlay = function(){
-
-
     if(this.numHealth>1){
         if(this.enemyArr.length < 1){
-
             if(this.keys.P.isDown && this.count == 0){
 
                 this.createEnemies(this.redEnemy, 3);
                 this.increase();
-
+                this.money += 50;
             }
             else if(this.keys.P.isDown && this.count == 1){
                 this.createEnemies(this.redEnemy, 10);
             }
-        
-
-
         }
     }
     if(this.numHealth<1){
         let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
-        // this.lost.play();
         if(this.keys.Q.isDown){
-
             this.scene.restart();
-
         }
 
     }
 }
-
-
-
-
-
-
-
 
 //create rounds of enemies
 gameScene.createEnemies = function(enemyType, numEnemies) {
@@ -331,11 +323,23 @@ gameScene.createEnemies = function(enemyType, numEnemies) {
 }
 
 gameScene.noPath = function(){
-    if(checkOverlap(this.hero, rect)){
-        this.scene.restart();
-    }
-}
+        //iterate through array of rectangles
+        // for(let i = 0; i < this.path.pathArr.length; i++){
+        //     for(let j = 0; j < this.hero.heroArr.length; j++){
+        //         if (this.hero.heroArr[j].isInside(this.path.pathArr[i])){
+        //                 this.scene.restart();
+        //     }
+        // }
 
+
+        // }
+
+        //check if mouse placement of sprite isInside any of the rectangles 
+
+        //if true, splice sprite, refund money
+
+        // if faalse, do nothing
+}
 
 
 gameScene.attack = function(enemyType) {
@@ -360,6 +364,7 @@ gameScene.attack = function(enemyType) {
 
             // if enemy is in range 
             if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
+                this.hero.dartArr[j].setVisible(true);
                 this.physics.moveToObject(this.hero.dartArr[j], en, 300);
             }
         //   else {
@@ -375,6 +380,7 @@ gameScene.attack = function(enemyType) {
 
             // otherwise if the enemy is out of range of the hero, return the dart
             if (Math.abs(this.hero.heroArr[j].x - en.x) > range && Math.abs(this.hero.heroArr[j].y - en.y) > range) {
+                this.hero.dartArr[j].setVisible(false);
                 this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
                 this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
             }
