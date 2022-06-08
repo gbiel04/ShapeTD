@@ -230,7 +230,7 @@ gameScene.update = function() {
     this.attack(this.redEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
-
+// this.noPath();
     // if(this.enemyArr.length < 1){
     //     this.createEnemies(this.redEnemy, 3);
     // }
@@ -328,7 +328,9 @@ gameScene.createEnemies = function(enemyType, numEnemies) {
 }
 
 gameScene.noPath = function(){
-    
+    if(checkOverlap(this.hero, rect)){
+        this.scene.restart();
+    }
 }
 
 
