@@ -83,7 +83,7 @@ this.lost = this.sound.add('lost');
     this.dollar.setScale(0.06);
     this.moneyBar = this.add.text(550, config.height / 9, '100', { color: 'blue' });
     this.moneyBar.setStroke('#fff', 1);
-    this.moneyBar.setText('Money ' + this.numHealth);
+    // this.moneyBar.setText('Money ' + this.money);
 
     //create path
     this.path = new Phaser.Curves.Path(0, 275);
@@ -156,21 +156,24 @@ this.lost = this.sound.add('lost');
     this.input.on('pointerdown', function(pointer) {
 
         if(this.numHealth > 1){
-        let hero = this.add.sprite(pointer.x, pointer.y, 'us');
-        let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
-        this.physics.add.existing(dart);
+            if(this.money >=50){
+                this.money -= 50;
+                let hero = this.add.sprite(pointer.x, pointer.y, 'us');
+                let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
+                this.physics.add.existing(dart);
 
-        // dart.setVisible(false);
-        hero.setScale(0.2);
-        hero.flipX = true;
-        dart.setScale(.01);
-        dart.flipX = true;
-        this.hero.heroArr.push(hero);
-        this.hero.dartArr.push(dart);}
+                // dart.setVisible(false);
+                hero.setScale(0.2);
+                hero.flipX = true;
+                dart.setScale(.01);
+                dart.flipX = true;
+                this.hero.heroArr.push(hero);
+                this.hero.dartArr.push(dart);}}
         else{
             this.lost.play();
         }
     }, this);
+
 
 
     //setup stats for a red Enemy
@@ -226,6 +229,7 @@ gameScene.update = function() {
     this.updateHealth2();
     this.attack(this.redEnemy);
     this.gamePlay();
+    this.moneyBar.setText('Money ' + this.money);
 
     // if(this.enemyArr.length < 1){
     //     this.createEnemies(this.redEnemy, 3);
@@ -322,6 +326,12 @@ gameScene.createEnemies = function(enemyType, numEnemies) {
 
     }
 }
+
+gameScene.noPath = function(){
+    
+}
+
+
 
 gameScene.attack = function(enemyType) {
 
