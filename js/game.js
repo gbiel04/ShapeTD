@@ -164,7 +164,7 @@ this.lost = this.sound.add('lost');
         color: 'player',
         heroArr: [],
         dartArr: [],
-        damage: 1,
+        damage: 0.6,
         shootSpeed: 3
 
     };
@@ -180,7 +180,7 @@ this.lost = this.sound.add('lost');
                 this.physics.add.existing(dart);
 
                 // dart.setVisible(false);
-                hero.setScale(0.2);
+                hero.setScale(0.17);
                 hero.flipX = true;
                 dart.setVisible(false);
                 dart.setScale(.01);
@@ -223,7 +223,7 @@ this.lost = this.sound.add('lost');
         startX: 0,
         startY: 275,
         color: 'black',
-        health: 25,
+        health: 70,
         damage: 25,
         speed: 17000
     };
@@ -250,7 +250,6 @@ gameScene.update = function() {
     this.attack(this.blueEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
-    this.noPath();
 
 
     this.printOuts();
@@ -302,24 +301,24 @@ gameScene.createEnemies = function(enemyType, numEnemies) {
     }
 }
 
-gameScene.noPath = function(){
-        //iterate through array of rectangles
-        // for(let i = 0; i < this.path.pathArr.length; i++){
-        //     for(let j = 0; j < this.hero.heroArr.length; j++){
-        //         if (this.hero.heroArr[j].isInside(this.path.pathArr[i])){
-        //                 this.scene.restart();
-        //     }
-        // }
+// gameScene.noPath = function(){
+//         //iterate through array of rectangles
+//         // for(let i = 0; i < this.path.pathArr.length; i++){
+//         //     for(let j = 0; j < this.hero.heroArr.length; j++){
+//         //         if (this.hero.heroArr[j].isInside(this.path.pathArr[i])){
+//         //                 this.scene.restart();
+//         //     }
+//         // }
 
 
-        // }
+//         // }
 
-        //check if mouse placement of sprite isInside any of the rectangles 
+//         //check if mouse placement of sprite isInside any of the rectangles 
 
-        //if true, splice sprite, refund money
+//         //if true, splice sprite, refund money
 
-        // if faalse, do nothing
-}
+//         // if faalse, do nothing
+// }
 
 
 gameScene.attack = function(enemyType) {
@@ -345,7 +344,7 @@ gameScene.attack = function(enemyType) {
             // if enemy is in range 
             if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
                 this.hero.dartArr[j].setVisible(true);
-                this.physics.moveTo(this.hero.dartArr[j], en.x, en.y, 300);
+                this.physics.moveTo(this.hero.dartArr[j], en.x, en.y, 230);
             }
         //   else {
         //         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
@@ -407,7 +406,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
             en.setX(800);
             en.setY(200);
             this.enemyArr.splice(i, 1); //???
-            this.money += 10;
+            this.money += 5;
         }
         // console.log(this.enemyArr.length);
     }
@@ -462,6 +461,7 @@ if(this.keys.P.isDown && this.count == 0){
 this.round1();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 1){
+
 this.increase();
 }   
 
@@ -576,38 +576,59 @@ gameScene.round1 = function(){
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round2 = function(){
-    this.createEnemies(this.redEnemy, 15);
+    this.createEnemies(this.redEnemy, 10);
     this.increase();
     this.roundNum = 2;
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round3 = function(){
-    this.createEnemies(this.redEnemy, 10);
+    this.createEnemies(this.redEnemy, 6);
+    this.createEnemies(this.redEnemy, 4);
     this.createEnemies(this.blueEnemy, 5);
     this.increase();
     this.roundNum = 3;
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round4 = function(){
-    this.createEnemies(this.redEnemy, 25);
+    this.createEnemies(this.redEnemy, 8);
+    this.createEnemies(this.redEnemy, 8);
+    this.createEnemies(this.redEnemy, 8);
     this.increase();
     this.roundNum = 4;
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round5 = function(){
     this.createEnemies(this.blueEnemy, 12);
+    for(let i =0; i<this.enemyArr.length;i++){
+        if(this.enemyArr[this.enemyArr.length - 1].x > 100)
+        this.createEnemies(this.blueEnemy, 12);
+    }
+
     this.increase();
     this.roundNum = 5;
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round6 = function(){
-
+    this.createEnemies(this.blackEnemy, 5);
+    this.createEnemies(this.redEnemy, 10);
+    this.increase();
+    this.roundNum = 6;
+    this.round.setText(' ' + this.roundNum);
 }
 gameScene.round7 = function(){
-
+    this.createEnemies(this.blackEnemy, 5);
+    this.createEnemies(this.blueEnemy, 5);
+    this.createEnemies(this.redEnemy, 5);
+    this.increase();
+    this.roundNum = 7;
+    this.round.setText(' ' + this.roundNum);
 }
 gameScene.round8 = function(){
-
+    this.createEnemies(this.blueEnemy, 15);
+    this.createEnemies(this.redEnemy, 15);
+    this.increase();
+    this.roundNum = 7;
+    this.round.setText(' ' + this.roundNum);
 }
 gameScene.round9 = function(){
 
