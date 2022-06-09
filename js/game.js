@@ -165,7 +165,7 @@ this.lost = this.sound.add('lost');
         heroArr: [],
         dartArr: [],
         damage: 1,
-        shootSpeed: 4
+        shootSpeed: 3
 
     };
 
@@ -201,8 +201,8 @@ this.lost = this.sound.add('lost');
         startX: 0,
         startY: 275,
         color: 'red',
-        health: 8,
-        damage: 5,
+        health: 10,
+        damage: 10,
         speed: 18000
     };
     //setup stats for a red Enemy
@@ -212,8 +212,8 @@ this.lost = this.sound.add('lost');
         startX: 0,
         startY: 275,
         color: 'blue',
-        health: 10,
-        damage: 10,
+        health: 20,
+        damage: 15,
         speed: 11000
     };
     //setup stats for a red Enemy
@@ -333,7 +333,7 @@ gameScene.attack = function(enemyType) {
         for (let j = 0; j < this.hero.heroArr.length; j++) {
 
             //set a range to shoot when within 150 pixels
-            let range = 150;
+            let range = 100;
 
             //OLD
             // if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
@@ -345,7 +345,7 @@ gameScene.attack = function(enemyType) {
             // if enemy is in range 
             if (Math.abs(this.hero.heroArr[j].x - en.x) < range && Math.abs(this.hero.heroArr[j].y - en.y) < range) {
                 this.hero.dartArr[j].setVisible(true);
-                this.physics.moveToObject(this.hero.dartArr[j], en, 300);
+                this.physics.moveTo(this.hero.dartArr[j], en.x, en.y, 300);
             }
         //   else {
         //         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
