@@ -157,7 +157,11 @@ this.lost = this.sound.add('lost');
     this.road = {
         roadArr: []
     };
-    this.road.roadArr.push(rect);
+this.road.roadArr.push(rect);
+
+    this.hitbox = {
+        hitboxArr: []
+    }; 
 
 
     this.hero = {
@@ -177,6 +181,10 @@ this.lost = this.sound.add('lost');
                 this.money -= 50;
                 let hero = this.add.sprite(pointer.x, pointer.y, 'us');
                 let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
+                let box = new Phaser.Geom.Rectangle(pointer.x -25, pointer.y - 40, 60, 82);
+                graphics.strokeRectShape(rect);
+                
+
                 this.physics.add.existing(dart);
 
                 // dart.setVisible(false);
@@ -185,6 +193,7 @@ this.lost = this.sound.add('lost');
                 dart.setVisible(false);
                 dart.setScale(.01);
                 dart.flipX = true;
+                this.hitbox.hitboxArr.push(box);
                 this.hero.heroArr.push(hero);
                 this.hero.dartArr.push(dart);}}
         else{
@@ -223,7 +232,7 @@ this.lost = this.sound.add('lost');
         startX: 0,
         startY: 275,
         color: 'black',
-        health: 70,
+        health: 120,
         damage: 25,
         speed: 17000
     };
@@ -286,6 +295,17 @@ gameScene.increase = function(){
     this.count++;
 }
 
+// gameScene.noPath = function(){
+//     for(let i = 0; i < this.road.roadArr.length; i++){
+//         for(let j = 0; j < this.hitbox.hitboxArr.length; j++){
+//             if(checkOverlap(this.hitbox.hitboxArr[j], this.road.roadArr[i])){
+//                 this.scene.restart();
+//             }
+//         }
+//     }
+
+// }
+
 //create rounds of enemies
 gameScene.createEnemies = function(enemyType, numEnemies) {
 
@@ -308,25 +328,6 @@ gameScene.createEnemies = function(enemyType, numEnemies) {
 
     }
 }
-
-// gameScene.noPath = function(){
-//         //iterate through array of rectangles
-//         // for(let i = 0; i < this.path.pathArr.length; i++){
-//         //     for(let j = 0; j < this.hero.heroArr.length; j++){
-//         //         if (this.hero.heroArr[j].isInside(this.path.pathArr[i])){
-//         //                 this.scene.restart();
-//         //     }
-//         // }
-
-
-//         // }
-
-//         //check if mouse placement of sprite isInside any of the rectangles 
-
-//         //if true, splice sprite, refund money
-
-//         // if faalse, do nothing
-// }
 
 
 gameScene.attack = function(enemyType) {
