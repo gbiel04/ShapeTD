@@ -231,8 +231,11 @@ this.lost = this.sound.add('lost');
     // this.createEnemies(this.redEnemy, 3);
 
 
-    this.keys = this.input.keyboard.addKeys('P, Q');
+    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D');
     this.count = 0;
+    this.answered = false;
+    this.correct = false;
+    this.q1 = this.add.text(config.width/2-300, config.height/2, ' ', {fontSize:'50px', fill:'#fff'});
 };
 
 
@@ -274,6 +277,11 @@ function checkOverlap(spriteA, spriteB) {
     var boundsB = spriteB.getBounds();
     return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
 };
+
+function checkRect(rectA, rectB) {
+    return Phaser.Geom.Intersects.RectangleToRectangle(rectA, rectB);
+};
+
 gameScene.increase = function(){
     this.count++;
 }
@@ -458,12 +466,15 @@ gameScene.gamePlay = function(){
         if(this.enemyArr.length < 1){
 //round 1
 if(this.keys.P.isDown && this.count == 0){
-this.round1();
+    this.round1();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 1){
-
-this.increase();
-}   
+    this.question1();
+    if(this.answered && this.count == 1){
+        this.q1.setText(' ');
+        this.increase();
+    }
+}
 
 //round 2
 else if(this.keys.P.isDown && this.count == 2){
@@ -639,6 +650,36 @@ gameScene.round10 = function(){
 gameScene.round11 = function(){
 
 }
+
+
+gameScene.question1 = function(){
+    this.answered = false;
+    this.correct = false;
+    this.q1.setText('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home');
+    this.input.keyboard.on('keydown_A', function (event) {
+        this.answered = true;
+        
+        //gameScene.updateStats(money, environment, reputation);
+    }, this);
+
+    if (this.keys.A.isDown){
+        this.money+= 5;
+        this.answered = true;
+        this.correct = true;
+        this.q1.setText(' ');
+    }
+    else if (this.keys.B.isDown){
+        this.answered = true;
+    }
+    else if (this.keys.C.isDown){
+        this.answered = true;
+    }
+    else if (this.keys.D.isDown){
+        this.answered = true;
+    }
+}
+
+
 
 
 // set the configuration of the game
