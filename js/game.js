@@ -470,7 +470,7 @@ if(this.keys.P.isDown && this.count == 0){
     this.round1();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 1){
-    this.question1();
+    this.question2('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home','B');
     if(this.answered && this.count == 1){
         this.q1.setText(' ');
         this.increase();
@@ -659,15 +659,12 @@ gameScene.question1 = function(){
     this.q1.setText('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home');
     this.input.keyboard.on('keydown_A', function (event) {
         this.answered = true;
-        
-        //gameScene.updateStats(money, environment, reputation);
     }, this);
 
     if (this.keys.A.isDown){
         this.money+= 5;
         this.answered = true;
         this.correct = true;
-        this.q1.setText(' ');
     }
     else if (this.keys.B.isDown){
         this.answered = true;
@@ -675,9 +672,71 @@ gameScene.question1 = function(){
     else if (this.keys.C.isDown){
         this.answered = true;
     }
-    else if (this.keys.D.isDown){
+    else if (this.keys.D.isDown){ 
         this.answered = true;
     }
+}
+gameScene.question2 = function(qu,ans){
+    this.answered = false;
+    this.correct = false;
+    this.q1.setText(qu);
+    this.input.keyboard.on('keydown_A', function (event) {
+        this.answered = true;
+
+    }, this);
+    
+    if( strcmp(ans, 'A') == 0){
+        if (this.keys.A.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+
+    if( strcmp(ans, 'B') == 0){
+        if (this.keys.B.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.A.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+
+    if( strcmp(ans, 'C') == 0){
+        if (this.keys.C.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.A.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+    if( strcmp(ans, 'D') == 0){
+        if (this.keys.D.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.A.isDown ){
+            this.answered = true;
+        }
+    }
+
+
+
+
+}
+
+function strcmp(a, b) {
+    if (a.toString() < b.toString()) return -1;
+    if (a.toString() > b.toString()) return 1;
+    return 0;
 }
 
 
