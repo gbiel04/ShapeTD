@@ -49,7 +49,7 @@ gameScene.preload = function() {
     this.load.image('bullet', 'assets/bullet.png');
 
     this.load.audio('hit', 'assets/8bit.mp3');
-    this.load.audio('lost','assets/lost.mp3');
+    this.load.audio('lost', 'assets/lost.mp3');
 };
 
 
@@ -62,7 +62,7 @@ gameScene.create = function() {
 
     //adding sound
     this.hit = this.sound.add('hit');
-this.lost = this.sound.add('lost');
+    this.lost = this.sound.add('lost');
     //create health base
     this.health = this.add.sprite(135, 550, 'heart')
     this.health.setScale(0.01);
@@ -78,7 +78,7 @@ this.lost = this.sound.add('lost');
     this.healthBar.setText('Health ' + this.numHealth);
 
     //instructions
-    this.instructions = this.add.text(500, config.height - 30, 'P to start next round \n Q to restart', {fontSize: '15px', color: 'red'});
+    this.instructions = this.add.text(500, config.height - 30, 'P to start next round \n Q to restart', { fontSize: '15px', color: 'red' });
 
     //create money for money
     this.money = 100;
@@ -90,7 +90,7 @@ this.lost = this.sound.add('lost');
 
     //round counter
     this.roundNum = 0;
-    this.round = this.add.text(50, config.height/14, this.roundNum, {fontSize: '30px', color: 'black'});
+    this.round = this.add.text(50, config.height / 14, this.roundNum, { fontSize: '30px', color: 'black' });
 
     //create path
     this.path = new Phaser.Curves.Path(0, 275);
@@ -157,11 +157,11 @@ this.lost = this.sound.add('lost');
     this.road = {
         roadArr: []
     };
-this.road.roadArr.push(rect);
+    this.road.roadArr.push(rect);
 
     this.hitbox = {
         hitboxArr: []
-    }; 
+    };
 
 
     this.hero = {
@@ -175,15 +175,15 @@ this.road.roadArr.push(rect);
 
     this.input.on('pointerdown', function(pointer) {
 
-        if(this.numHealth > 1){
-            if(this.money >=50){
-                
+        if (this.numHealth > 1) {
+            if (this.money >= 50) {
+
                 this.money -= 50;
                 let hero = this.add.sprite(pointer.x, pointer.y, 'us');
                 let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
-                let box = new Phaser.Geom.Rectangle(pointer.x -25, pointer.y - 40, 60, 82);
+                let box = new Phaser.Geom.Rectangle(pointer.x - 25, pointer.y - 40, 60, 82);
                 graphics.strokeRectShape(rect);
-                
+
 
                 this.physics.add.existing(dart);
 
@@ -195,8 +195,9 @@ this.road.roadArr.push(rect);
                 dart.flipX = true;
                 this.hitbox.hitboxArr.push(box);
                 this.hero.heroArr.push(hero);
-                this.hero.dartArr.push(dart);}}
-        else{
+                this.hero.dartArr.push(dart);
+            }
+        } else {
             this.lost.play();
         }
     }, this);
@@ -244,8 +245,44 @@ this.road.roadArr.push(rect);
     this.count = 0;
     this.answered = false;
     this.correct = false;
-    this.q1 = this.add.text(config.width/2-300, config.height/2, ' ', {fontSize:'50px', fill:'#fff'});
+    this.q1 = this.add.text(config.width / 2 - 300, config.height / 2, ' ', { fontSize: '50px', fill: '#fff' });
+
+
+
+
+    getQuestions();
+
 };
+
+
+
+
+
+
+var qAnswer = 'hi';
+
+//Getting questions from JSON Array file into JS variable
+async function getQuestions() {
+    await fetch("questions/questions.json").then(response => {
+        q = response;
+        return response.json();
+    }).then(jsondata => {
+        //console.log(jsondata);
+
+        //simple print examples from JSON
+        var q = jsondata;
+        //console.log(q);
+        //console.log(q[0].num);
+
+        //loops through entire JSON array and prints each piece of data out
+        for (var i = 0; i < q.length; i++) {
+            var qQuestion = q[i].question;
+            qAnswer = q[i].answer;
+            //console.log((i + 1) + '.\t' + qQuestion + '\t' + qAnswer);
+        }
+
+    });
+}
 
 
 
@@ -254,6 +291,10 @@ this.road.roadArr.push(rect);
 // After setup is complete, update is called on a loop 
 // for each frame during game play.
 gameScene.update = function() {
+
+    console.log(qAnswer);
+
+
     // check if player overlaps the goal
     this.updateEnemies();
     this.updateHealth2();
@@ -291,7 +332,7 @@ function checkRect(rectA, rectB) {
     return Phaser.Geom.Intersects.RectangleToRectangle(rectA, rectB);
 };
 
-gameScene.increase = function(){
+gameScene.increase = function() {
     this.count++;
 }
 
@@ -355,10 +396,10 @@ gameScene.attack = function(enemyType) {
                 this.hero.dartArr[j].setVisible(true);
                 this.physics.moveTo(this.hero.dartArr[j], en.x, en.y, 230);
             }
-        //   else {
-        //         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
-        //         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
-        //     }  
+            //   else {
+            //         this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
+            //         this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
+            //     }  
             // else if(this.enemyArr.length < 1){
             //     this.hero.dartArr[j].setX(this.hero.heroArr[j].x);
             //     this.hero.dartArr[j].setY(this.hero.heroArr[j].y);
@@ -409,7 +450,7 @@ gameScene.updateHealth = function(dart, heroIndex) {
 
         //hide enemy if health below 1
         // if (isNaN(en.health)) 
-        if(en.health < 1){
+        if (en.health < 1) {
             en.setActive(false);
             en.setVisible(false);
             en.setX(800);
@@ -462,113 +503,115 @@ function getRandomInt(min, max) {
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //create rounds of gameplay
-gameScene.gamePlay = function(){
-    if(this.numHealth>1){
-        if(this.enemyArr.length < 1){
-//round 1
-if(this.keys.P.isDown && this.count == 0){
-    this.round1();
-}       //question break
-else if(this.enemyArr.length < 1 && this.count == 1){
-    this.question2('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home','B');
-    if(this.answered && this.count == 1){
-        this.q1.setText(' ');
-        this.increase();
+gameScene.gamePlay = function() {
+    if (this.numHealth > 1) {
+        if (this.enemyArr.length < 1) {
+            //round 1
+            if (this.keys.P.isDown && this.count == 0) {
+                this.round1();
+            } //question break
+            else if (this.enemyArr.length < 1 && this.count == 1) {
+                this.question2('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home', 'B');
+                if (this.answered && this.count == 1) {
+                    this.q1.setText(' ');
+                    this.increase();
+                }
+            }
+
+            //round 2
+            else if (this.keys.P.isDown && this.count == 2) {
+                this.round2();
+            } //question break       
+            else if (this.enemyArr.length < 1 && this.count == 3) {
+                this.increase();
+            }
+
+            //round 3
+            if (this.keys.P.isDown && this.count == 4) {
+                this.round3();
+            } //question break
+            else if (this.enemyArr.length < 1 && this.count == 5) {
+                this.increase();
+            }
+
+            //round 4
+            if (this.keys.P.isDown && this.count == 6) {
+                this.round4();
+            } //question break
+            else if (this.enemyArr.length < 1 && this.count == 7) {
+                this.increase();
+            }
+
+            //round 5
+            if (this.keys.P.isDown && this.count == 8) {
+                this.round5();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 9) {
+                this.increase();
+            }
+
+            //round 6
+            if (this.keys.P.isDown && this.count == 10) {
+                this.round6();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 11) {
+                this.increase();
+            }
+
+            //round 7
+            if (this.keys.P.isDown && this.count == 12) {
+                this.round7();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 13) {
+                this.increase();
+            }
+
+            //round 8
+            if (this.keys.P.isDown && this.count == 14) {
+                this.round8();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 15) {
+                this.increase();
+            }
+
+            //round 9
+            if (this.keys.P.isDown && this.count == 16) {
+                this.round9();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 17) {
+                this.increase();
+            }
+
+            //round 10
+            if (this.keys.P.isDown && this.count == 18) {
+                this.round10();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 19) {
+                this.increase();
+            }
+
+            //round 11
+            if (this.keys.P.isDown && this.count == 20) {
+                this.round11();
+            }
+            //question break
+            else if (this.enemyArr.length < 1 && this.count == 121) {
+                this.increase();
+            }
+
+
+        }
     }
-}
 
-//round 2
-else if(this.keys.P.isDown && this.count == 2){
-this.round2();
-}    //question break       
-else if(this.enemyArr.length < 1 && this.count == 3){
-this.increase();
-}  
-
-//round 3
-if(this.keys.P.isDown && this.count == 4){
-this.round3();
-}       //question break
-else if(this.enemyArr.length < 1 && this.count == 5){
-this.increase(); 
-}
-
-//round 4
-if(this.keys.P.isDown && this.count == 6){
-this.round4();
-}       //question break
-else if(this.enemyArr.length < 1 && this.count == 7){
-this.increase(); }
-
-//round 5
-if(this.keys.P.isDown && this.count == 8){
-this.round5();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 9){
-this.increase();
-}
-
-//round 6
-if(this.keys.P.isDown && this.count == 10){
-this.round6();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 11){
-this.increase();
-}
-
-//round 7
-if(this.keys.P.isDown && this.count == 12){
-this.round7();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 13){
-this.increase();
-}
-
-//round 8
-if(this.keys.P.isDown && this.count == 14){
-this.round8();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 15){
-this.increase();
-}
-
-//round 9
-if(this.keys.P.isDown && this.count == 16){
-this.round9();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 17){
-this.increase();
-}
-
-//round 10
-if(this.keys.P.isDown && this.count == 18){
-this.round10();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 19){
-this.increase();
-}
-
-//round 11
-if(this.keys.P.isDown && this.count == 20){
-this.round11();
-}
-//question break
-else if(this.enemyArr.length < 1 && this.count == 121){
-this.increase();
-}
-
-
-    }}
-    
-    if(this.numHealth<1){
-        let gameOverText = this.add.text(config.width/2-50, config.height/2, 'GAME OVER', {fontSize:'50px', fill:'#fff'});
-        if(this.keys.Q.isDown){
+    if (this.numHealth < 1) {
+        let gameOverText = this.add.text(config.width / 2 - 50, config.height / 2, 'GAME OVER', { fontSize: '50px', fill: '#fff' });
+        if (this.keys.Q.isDown) {
             this.scene.restart();
         }
 
@@ -581,19 +624,19 @@ this.increase();
 
 
 
-gameScene.round1 = function(){
+gameScene.round1 = function() {
     this.createEnemies(this.redEnemy, 5);
     this.increase();
     this.roundNum = 1;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round2 = function(){
+gameScene.round2 = function() {
     this.createEnemies(this.redEnemy, 10);
     this.increase();
     this.roundNum = 2;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round3 = function(){
+gameScene.round3 = function() {
     this.createEnemies(this.redEnemy, 6);
     this.createEnemies(this.redEnemy, 4);
     this.createEnemies(this.blueEnemy, 5);
@@ -601,7 +644,7 @@ gameScene.round3 = function(){
     this.roundNum = 3;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round4 = function(){
+gameScene.round4 = function() {
     this.createEnemies(this.redEnemy, 8);
     this.createEnemies(this.redEnemy, 8);
     this.createEnemies(this.redEnemy, 8);
@@ -609,25 +652,25 @@ gameScene.round4 = function(){
     this.roundNum = 4;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round5 = function(){
+gameScene.round5 = function() {
     this.createEnemies(this.blueEnemy, 12);
-    for(let i =0; i<this.enemyArr.length;i++){
-        if(this.enemyArr[this.enemyArr.length - 1].x > 100)
-        this.createEnemies(this.blueEnemy, 12);
+    for (let i = 0; i < this.enemyArr.length; i++) {
+        if (this.enemyArr[this.enemyArr.length - 1].x > 100)
+            this.createEnemies(this.blueEnemy, 12);
     }
 
     this.increase();
     this.roundNum = 5;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round6 = function(){
+gameScene.round6 = function() {
     this.createEnemies(this.blackEnemy, 5);
     this.createEnemies(this.redEnemy, 10);
     this.increase();
     this.roundNum = 6;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round7 = function(){
+gameScene.round7 = function() {
     this.createEnemies(this.blackEnemy, 5);
     this.createEnemies(this.blueEnemy, 5);
     this.createEnemies(this.redEnemy, 5);
@@ -635,95 +678,88 @@ gameScene.round7 = function(){
     this.roundNum = 7;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round8 = function(){
+gameScene.round8 = function() {
     this.createEnemies(this.blueEnemy, 15);
     this.createEnemies(this.redEnemy, 15);
     this.increase();
     this.roundNum = 7;
     this.round.setText(' ' + this.roundNum);
 }
-gameScene.round9 = function(){
+gameScene.round9 = function() {
 
 }
-gameScene.round10 = function(){
+gameScene.round10 = function() {
 
 }
-gameScene.round11 = function(){
+gameScene.round11 = function() {
 
 }
 
 
-gameScene.question1 = function(){
+gameScene.question1 = function() {
     this.answered = false;
     this.correct = false;
     this.q1.setText('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home');
-    this.input.keyboard.on('keydown_A', function (event) {
+    this.input.keyboard.on('keydown_A', function(event) {
         this.answered = true;
     }, this);
 
-    if (this.keys.A.isDown){
-        this.money+= 5;
+    if (this.keys.A.isDown) {
+        this.money += 5;
         this.answered = true;
         this.correct = true;
-    }
-    else if (this.keys.B.isDown){
+    } else if (this.keys.B.isDown) {
         this.answered = true;
-    }
-    else if (this.keys.C.isDown){
+    } else if (this.keys.C.isDown) {
         this.answered = true;
-    }
-    else if (this.keys.D.isDown){ 
+    } else if (this.keys.D.isDown) {
         this.answered = true;
     }
 }
-gameScene.question2 = function(qu,ans){
+gameScene.question2 = function(qu, ans) {
     this.answered = false;
     this.correct = false;
     this.q1.setText(qu);
-    this.input.keyboard.on('keydown_A', function (event) {
+    this.input.keyboard.on('keydown_A', function(event) {
         this.answered = true;
 
     }, this);
-    
-    if( strcmp(ans, 'A') == 0){
-        if (this.keys.A.isDown){
-            this.money+= 5;
+
+    if (strcmp(ans, 'A') == 0) {
+        if (this.keys.A.isDown) {
+            this.money += 5;
             this.answered = true;
             this.correct = true;
-        }
-        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+        } else if (this.keys.B.isDown || this.keys.C.isDown || this.keys.D.isDown) {
             this.answered = true;
         }
     }
 
-    if( strcmp(ans, 'B') == 0){
-        if (this.keys.B.isDown){
-            this.money+= 5;
+    if (strcmp(ans, 'B') == 0) {
+        if (this.keys.B.isDown) {
+            this.money += 5;
             this.answered = true;
             this.correct = true;
-        }
-        else if(this.keys.A.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+        } else if (this.keys.A.isDown || this.keys.C.isDown || this.keys.D.isDown) {
             this.answered = true;
         }
     }
 
-    if( strcmp(ans, 'C') == 0){
-        if (this.keys.C.isDown){
-            this.money+= 5;
+    if (strcmp(ans, 'C') == 0) {
+        if (this.keys.C.isDown) {
+            this.money += 5;
             this.answered = true;
             this.correct = true;
-        }
-        else if(this.keys.B.isDown || this.keys.A.isDown || this.keys.D.isDown ){
+        } else if (this.keys.B.isDown || this.keys.A.isDown || this.keys.D.isDown) {
             this.answered = true;
         }
     }
-    if( strcmp(ans, 'D') == 0){
-        if (this.keys.D.isDown){
-            this.money+= 5;
+    if (strcmp(ans, 'D') == 0) {
+        if (this.keys.D.isDown) {
+            this.money += 5;
             this.answered = true;
             this.correct = true;
-        }
-        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.A.isDown ){
+        } else if (this.keys.B.isDown || this.keys.C.isDown || this.keys.A.isDown) {
             this.answered = true;
         }
     }
