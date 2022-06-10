@@ -47,7 +47,8 @@ gameScene.preload = function() {
     this.load.image('us', 'assets/ussoldier.png');
     this.load.image('money', 'assets/money.png');
     this.load.image('bullet', 'assets/bullet.png');
-
+    this.load.image('h1', 'assets/h1.png');
+    this.load.image('h2', 'assets/h2.png');
     this.load.audio('hit', 'assets/8bit.mp3');
     this.load.audio('lost','assets/lost.mp3');
 };
@@ -71,11 +72,12 @@ this.lost = this.sound.add('lost');
 
     //create heart for health
     this.numHealth = 100;
-    this.heart = this.add.sprite(650, config.height / 12, 'heart');
+    this.heart = this.add.sprite(670, config.height / 12, 'heart');
     this.heart.setScale(0.01);
     this.healthBar = this.add.text(550, config.height / 16, '100', { color: 'red' });
     this.healthBar.setStroke('#fff', 1);
     this.healthBar.setText('Health ' + this.numHealth);
+    this.healthBar.setDepth(2);
 
     //instructions
     this.instructions = this.add.text(500, config.height - 30, 'P to start next round \n Q to restart', {fontSize: '15px', color: 'red'});
@@ -86,6 +88,7 @@ this.lost = this.sound.add('lost');
     this.dollar.setScale(0.06);
     this.moneyBar = this.add.text(550, config.height / 9, '100', { color: 'blue' });
     this.moneyBar.setStroke('#fff', 1);
+    this.moneyBar.setDepth(2);
     // this.moneyBar.setText('Money ' + this.money);
 
     //round counter
@@ -244,7 +247,14 @@ this.road.roadArr.push(rect);
     this.count = 0;
     this.answered = false;
     this.correct = false;
-    this.q1 = this.add.text(config.width/2-300, config.height/2, ' ', {fontSize:'50px', fill:'#fff'});
+    this.q1 = this.add.text(config.width/2-400, config.height/4, ' ', {fontSize:'20px', fill:'#fff'});
+    this.q1.setDepth(3);
+   
+    this.qPic = this.add.sprite(config.width/2,config.height/2,'black');
+    //this.qPic.setScale(.4);
+    this.qPic.setVisible(false);
+    this.qPic.setDepth(3);
+
 };
 
 
@@ -470,9 +480,10 @@ if(this.keys.P.isDown && this.count == 0){
     this.round1();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 1){
-    this.question2('(a)Workers get to take a well-earned vacation \n(b)Workers are deprived of their income and suffer hardships.\n(c)Employers can manage their businesses from home','B');
+    this.questionWithPic(' ', 'h1',0.4,'C');
     if(this.answered && this.count == 1){
         this.q1.setText(' ');
+        this.qPic.setVisible(false);
         this.increase();
     }
 }
@@ -480,10 +491,16 @@ else if(this.enemyArr.length < 1 && this.count == 1){
 //round 2
 else if(this.keys.P.isDown && this.count == 2){
 this.round2();
-}    //question break       
+}    //question break 
 else if(this.enemyArr.length < 1 && this.count == 3){
-this.increase();
-}  
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 3){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
+        this.increase();
+    }
+}
+
 
 //round 3
 if(this.keys.P.isDown && this.count == 4){
@@ -727,11 +744,66 @@ gameScene.question2 = function(qu,ans){
             this.answered = true;
         }
     }
-
-
-
-
 }
+
+gameScene.questionWithPic = function(qu,pic,scale,ans){
+    this.answered = false;
+    this.correct = false;
+    this.qPic.setVisible(true);
+    this.qPic.setScale(scale);
+    this.qPic.setTexture(pic);
+    this.q1.setText(qu);
+    this.input.keyboard.on('keydown_A', function (event) {
+        this.answered = true;
+
+    }, this);
+    
+    if( strcmp(ans, 'A') == 0){
+        if (this.keys.A.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+
+    if( strcmp(ans, 'B') == 0){
+        if (this.keys.B.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.A.isDown || this.keys.C.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+
+    if( strcmp(ans, 'C') == 0){
+        if (this.keys.C.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.A.isDown || this.keys.D.isDown ){
+            this.answered = true;
+        }
+    }
+    if( strcmp(ans, 'D') == 0){
+        if (this.keys.D.isDown){
+            this.money+= 5;
+            this.answered = true;
+            this.correct = true;
+        }
+        else if(this.keys.B.isDown || this.keys.C.isDown || this.keys.A.isDown ){
+            this.answered = true;
+        }
+    }
+}
+
+
+
 
 function strcmp(a, b) {
     if (a.toString() < b.toString()) return -1;
