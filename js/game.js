@@ -683,18 +683,26 @@ if(this.keys.P.isDown && this.count == 20){
 this.round11();
 }
 //question break
-else if(this.enemyArr.length < 1 && this.count == 121){
+else if(this.enemyArr.length < 1 && this.count == 21){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 21){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 12
-if(this.keys.P.isDown && this.count == 20){
+if(this.keys.P.isDown && this.count == 22){
 this.round12();
 }
 //question break
-else if(this.enemyArr.length < 1 && this.count == 121){
+else if(this.enemyArr.length < 1 && this.count == 23){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 23){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 
     }}
