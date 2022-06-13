@@ -52,7 +52,14 @@ gameScene.preload = function() {
     this.load.image('h2', 'assets/h2.png');
     this.load.image('h3', 'assets/h3 C.png');
     this.load.image('h4', 'assets/h4 A.png');
-    this.load.image('h4', 'assets/h5 A.png');
+    this.load.image('h5', 'assets/h5 A.png');
+    this.load.image('h6', 'assets/h6 B.png');
+    this.load.image('h7', 'assets/h7 D.png');
+    this.load.image('h8', 'assets/h8 D.png');
+    this.load.image('h9', 'assets/h9 B.png');
+    this.load.image('h10', 'assets/h10 C.png');
+    this.load.image('h11', 'assets/h11 A.png');
+    this.load.image('h12', 'assets/h12 D.png');
     this.load.audio('hit', 'assets/8bit.mp3');
     this.load.audio('lost','assets/lost.mp3');
 };
@@ -567,7 +574,7 @@ else if(this.keys.P.isDown && this.count == 2){
 this.round2();
 }    //question break 
 else if(this.enemyArr.length < 1 && this.count == 3){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h2',0.7,'A');
     if(this.answered && this.count == 3){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -581,7 +588,7 @@ if(this.keys.P.isDown && this.count == 4){
 this.round3();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 5){
-    this.questionWithPic(' ', 'h3',0.4,'C');
+    this.questionWithPic(' ', 'h3',0.7,'C');
     if(this.answered && this.count == 5){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -594,7 +601,7 @@ if(this.keys.P.isDown && this.count == 6){
 this.round4();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 7){
-    this.questionWithPic(' ', 'h4',0.4,'A');
+    this.questionWithPic(' ', 'h4',0.7,'A');
     if(this.answered && this.count == 7){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -606,7 +613,7 @@ this.round5();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 9){
-    this.questionWithPic(' ', 'h5',0.4,'A');
+    this.questionWithPic(' ', 'h5',0.7,'A');
     if(this.answered && this.count == 9){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -619,7 +626,7 @@ this.round6();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 11){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h6',0.7,'B');
     if(this.answered && this.count == 11){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -632,7 +639,7 @@ this.round7();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 13){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h7',0.7,'D');
     if(this.answered && this.count == 13){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -645,7 +652,7 @@ this.round8();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 15){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h8',0.5,'D');
     if(this.answered && this.count == 15){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -658,7 +665,7 @@ this.round9();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 17){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h9',0.5,'B');
     if(this.answered && this.count == 17){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -671,7 +678,7 @@ this.round10();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 19){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h10',0.5,'C');
     if(this.answered && this.count == 19){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -684,7 +691,7 @@ this.round11();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 21){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h11',0.7,'A');
     if(this.answered && this.count == 21){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -697,7 +704,7 @@ this.round12();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 23){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h12',0.5,'D');
     if(this.answered && this.count == 23){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -850,7 +857,7 @@ gameScene.question2 = function(qu,ans){
     
     if( strcmp(ans, 'A') == 0){
         if (this.keys.A.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -861,7 +868,7 @@ gameScene.question2 = function(qu,ans){
 
     if( strcmp(ans, 'B') == 0){
         if (this.keys.B.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -872,7 +879,7 @@ gameScene.question2 = function(qu,ans){
 
     if( strcmp(ans, 'C') == 0){
         if (this.keys.C.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -882,7 +889,7 @@ gameScene.question2 = function(qu,ans){
     }
     if( strcmp(ans, 'D') == 0){
         if (this.keys.D.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -906,7 +913,7 @@ gameScene.questionWithPic = function(qu,pic,scale,ans){
     
     if( strcmp(ans, 'A') == 0){
         if (this.keys.A.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -917,7 +924,7 @@ gameScene.questionWithPic = function(qu,pic,scale,ans){
 
     if( strcmp(ans, 'B') == 0){
         if (this.keys.B.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -928,7 +935,7 @@ gameScene.questionWithPic = function(qu,pic,scale,ans){
 
     if( strcmp(ans, 'C') == 0){
         if (this.keys.C.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
@@ -938,7 +945,7 @@ gameScene.questionWithPic = function(qu,pic,scale,ans){
     }
     if( strcmp(ans, 'D') == 0){
         if (this.keys.D.isDown){
-            this.money+= 5;
+            this.money+= 25;
             this.answered = true;
             this.correct = true;
         }
