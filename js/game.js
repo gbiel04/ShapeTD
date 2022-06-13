@@ -1,3 +1,4 @@
+
 // create a new scene
 let gameScene = new Phaser.Scene('Game');
 
@@ -61,6 +62,7 @@ gameScene.create = function() {
     this.bg = this.add.sprite(0, 0, 'bgr');
     this.bg.setOrigin(0, 0);
 
+
     //adding sound
     this.hit = this.sound.add('hit');
 this.lost = this.sound.add('lost');
@@ -116,51 +118,69 @@ this.lost = this.sound.add('lost');
     this.path.lineTo(300, 550);
 
     //Create rectangles for Path?
-    let rect = new Phaser.Geom.Rectangle(0, 265, 150, 25);
-    var rect2 = new Phaser.Geom.Rectangle(130, 180, 25, 100);
-    var rect3 = new Phaser.Geom.Rectangle(150, 180, 100, 25);
-    var rect4 = new Phaser.Geom.Rectangle(240, 180, 25, 290);
-    var rect5 = new Phaser.Geom.Rectangle(240, 450, 200, 25);
-    var rect6 = new Phaser.Geom.Rectangle(405, 100, 30, 380);
-    var rect7 = new Phaser.Geom.Rectangle(125, 100, 310, 25);
-    var rect8 = new Phaser.Geom.Rectangle(125, 25, 25, 100);
-    var rect9 = new Phaser.Geom.Rectangle(125, 25, 400, 25);
-    var rect10 = new Phaser.Geom.Rectangle(500, 25, 25, 100);
-    var rect11 = new Phaser.Geom.Rectangle(500, 100, 125, 25);
-    var rect12 = new Phaser.Geom.Rectangle(600, 100, 25, 110);
-    var rect13 = new Phaser.Geom.Rectangle(500, 190, 125, 25);
-    var rect14 = new Phaser.Geom.Rectangle(495, 190, 30, 180);
-    var rect15 = new Phaser.Geom.Rectangle(125, 340, 400, 30);
-    var rect16 = new Phaser.Geom.Rectangle(120, 340, 30, 200);
+    //this.rect = new Phaser.Geom.Rectangle(x, y, width, height);
+    this.rect = new Phaser.Geom.Rectangle(0, 230, 150, 90);
+    this.rect2 = new Phaser.Geom.Rectangle(105, 160, 70, 130);
+    this.rect3 = new Phaser.Geom.Rectangle(150, 160, 100, 85);
+    this.rect4 = new Phaser.Geom.Rectangle(210, 170, 80, 310);
+    this.rect5 = new Phaser.Geom.Rectangle(240, 420, 200, 70);
+    this.rect6 = new Phaser.Geom.Rectangle(380, 80, 80, 400);
+
+    this.rect7 = new Phaser.Geom.Rectangle(115, 80, 330, 70);
+
+    this.rect8 = new Phaser.Geom.Rectangle(125, 25, 25, 100);
+    this.rect9 = new Phaser.Geom.Rectangle(125, 25, 400, 25);
+    this.rect10 = new Phaser.Geom.Rectangle(500, 25, 25, 100);
+    this.rect11 = new Phaser.Geom.Rectangle(500, 100, 125, 25);
+    this.rect12 = new Phaser.Geom.Rectangle(600, 100, 25, 110);
+    this.rect13 = new Phaser.Geom.Rectangle(500, 190, 125, 25);
+    this.rect14 = new Phaser.Geom.Rectangle(495, 190, 30, 180);
+    this.rect15 = new Phaser.Geom.Rectangle(125, 340, 400, 30);
+    this.rect16 = new Phaser.Geom.Rectangle(120, 340, 30, 200);
 
 
 
 
     var graphics = this.add.graphics();
-    graphics.lineStyle(3, 0x000000, 1);
+    graphics.lineStyle(2, 0x000000, 1);
     this.path.draw(graphics, 64);
 
-    // graphics.strokeRectShape(rect);
-    // graphics.strokeRectShape(rect2);
-    // graphics.strokeRectShape(rect3);
-    // graphics.strokeRectShape(rect4);
-    // graphics.strokeRectShape(rect5);
-    // graphics.strokeRectShape(rect6);
-    // graphics.strokeRectShape(rect7);
-    // graphics.strokeRectShape(rect8);
-    // graphics.strokeRectShape(rect9);
-    // graphics.strokeRectShape(rect10);
-    // graphics.strokeRectShape(rect11);
-    // graphics.strokeRectShape(rect12);
-    // graphics.strokeRectShape(rect13);
-    // graphics.strokeRectShape(rect14);
-    // graphics.strokeRectShape(rect15);
-    // graphics.strokeRectShape(rect16);
+    graphics.strokeRectShape(this.rect);
+    graphics.strokeRectShape(this.rect2);
+    graphics.strokeRectShape(this.rect3);
+    graphics.strokeRectShape(this.rect4);
+    graphics.strokeRectShape(this.rect5);
+    graphics.strokeRectShape(this.rect6);
+    graphics.strokeRectShape(this.rect7);
+    graphics.strokeRectShape(this.rect8);
+    graphics.strokeRectShape(this.rect9);
+    graphics.strokeRectShape(this.rect10);
+    graphics.strokeRectShape(this.rect11);
+    graphics.strokeRectShape(this.rect12);
+    graphics.strokeRectShape(this.rect13);
+    graphics.strokeRectShape(this.rect14);
+    graphics.strokeRectShape(this.rect15);
+    graphics.strokeRectShape(this.rect16);
 
     this.road = {
         roadArr: []
     };
-this.road.roadArr.push(rect);
+this.road.roadArr.push(this.rect);
+this.road.roadArr.push(this.rect2);
+this.road.roadArr.push(this.rect3);
+this.road.roadArr.push(this.rect4);
+this.road.roadArr.push(this.rect5);
+this.road.roadArr.push(this.rect6);
+this.road.roadArr.push(this.rect7);
+this.road.roadArr.push(this.rect8);
+this.road.roadArr.push(this.rect9);
+this.road.roadArr.push(this.rect10);
+this.road.roadArr.push(this.rect11);
+this.road.roadArr.push(this.rect12);
+this.road.roadArr.push(this.rect13);
+this.road.roadArr.push(this.rect14);
+this.road.roadArr.push(this.rect15);
+this.road.roadArr.push(this.rect16);
 
     this.hitbox = {
         hitboxArr: []
@@ -178,15 +198,29 @@ this.road.roadArr.push(rect);
 
     this.input.on('pointerdown', function(pointer) {
 
+        
         if(this.numHealth > 1){
             if(this.money >=50){
+                if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[0], pointer.x, pointer.y)){
+                    if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[1], pointer.x, pointer.y)){
+                        if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[2], pointer.x, pointer.y)){
+                            if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[3], pointer.x, pointer.y)){
+                                if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[4], pointer.x, pointer.y)){
+                                    if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[5], pointer.x, pointer.y)){
+                                        if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[6], pointer.x, pointer.y)){
+                                            if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[7], pointer.x, pointer.y)){
+                                                if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[8], pointer.x, pointer.y)){
+                                                    if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[9], pointer.x, pointer.y)){
+                                                        if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[10], pointer.x, pointer.y)){
+                                                            if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[11], pointer.x, pointer.y)){
+                                                                if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[12], pointer.x, pointer.y)){
+                                                                    if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[13], pointer.x, pointer.y)){
+                                                                        if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[14], pointer.x, pointer.y)){
+                                                                            if(!Phaser.Geom.Rectangle.Contains(this.road.roadArr[15], pointer.x, pointer.y)){
                 
                 this.money -= 50;
                 let hero = this.add.sprite(pointer.x, pointer.y, 'us');
                 let dart = this.add.sprite(pointer.x, pointer.y, 'bullet');
-                let box = new Phaser.Geom.Rectangle(pointer.x -25, pointer.y - 40, 60, 82);
-                //graphics.strokeRectShape(rect);
-                
 
                 this.physics.add.existing(dart);
 
@@ -196,9 +230,11 @@ this.road.roadArr.push(rect);
                 dart.setVisible(false);
                 dart.setScale(.01);
                 dart.flipX = true;
-                this.hitbox.hitboxArr.push(box);
+
                 this.hero.heroArr.push(hero);
-                this.hero.dartArr.push(dart);}}
+                this.hero.dartArr.push(dart);
+                
+            }}}}}}}}}}}}}}}}}}
         else{
             this.lost.play();
         }
@@ -243,7 +279,7 @@ this.road.roadArr.push(rect);
     // this.createEnemies(this.redEnemy, 3);
 
 
-    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D');
+    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D, X');
     this.count = 0;
     this.answered = false;
     this.correct = false;
@@ -272,6 +308,7 @@ gameScene.update = function() {
     this.attack(this.blueEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
+    this.xRay();
 
 
     this.printOuts();
@@ -466,6 +503,14 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+gameScene.xRay = function(){
+    if(this.keys.X.isDown){
+          this.road.roadArr[0].isStroked = true;
+    }else{
+        this.road.roadArr[0].isStroked = false;    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
