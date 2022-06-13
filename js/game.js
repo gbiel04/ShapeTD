@@ -279,7 +279,7 @@ this.road.roadArr.push(this.rect16);
     // this.createEnemies(this.redEnemy, 3);
 
 
-    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D, X,Y');
+    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D, X,Y,Z');
     this.count = 0;
     this.answered = false;
     this.correct = false;
@@ -533,9 +533,9 @@ gameScene.xRay = function(){
         this.graphics.strokeRectShape(this.road.roadArr[15]);
         console.log('x');
     }
-    else if (this.keys.Y.isDown){
+    else if (this.keys.Z.isDown){
         this.graphics.clear();
-        console.log('y');
+        console.log('z');
     }
 }
 
