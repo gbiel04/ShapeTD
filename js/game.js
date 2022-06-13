@@ -50,6 +50,9 @@ gameScene.preload = function() {
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('h1', 'assets/h1.png');
     this.load.image('h2', 'assets/h2.png');
+    this.load.image('h3', 'assets/h3 C.png');
+    this.load.image('h4', 'assets/h4 A.png');
+    this.load.image('h4', 'assets/h5 A.png');
     this.load.audio('hit', 'assets/8bit.mp3');
     this.load.audio('lost','assets/lost.mp3');
 };
@@ -578,7 +581,7 @@ if(this.keys.P.isDown && this.count == 4){
 this.round3();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 5){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h3',0.4,'C');
     if(this.answered && this.count == 5){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -591,7 +594,7 @@ if(this.keys.P.isDown && this.count == 6){
 this.round4();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 7){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h4',0.4,'A');
     if(this.answered && this.count == 7){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
@@ -603,7 +606,7 @@ this.round5();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 9){
-    this.questionWithPic(' ', 'h2',0.4,'A');
+    this.questionWithPic(' ', 'h5',0.4,'A');
     if(this.answered && this.count == 9){
         this.q1.setText(' ');
         this.qPic.setVisible(false);
