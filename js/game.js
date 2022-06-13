@@ -141,26 +141,28 @@ this.lost = this.sound.add('lost');
 
 
 
-    var graphics = this.add.graphics();
-    graphics.lineStyle(2, 0x000000, 1);
-    this.path.draw(graphics, 64);
+    this.graphics = this.add.graphics();
+    this.graphics.lineStyle(2, 0x000000, 1);
+    this.path.draw(this.graphics, 64);
+    this.graphics.clear();
 
-    graphics.strokeRectShape(this.rect);
-    graphics.strokeRectShape(this.rect2);
-    graphics.strokeRectShape(this.rect3);
-    graphics.strokeRectShape(this.rect4);
-    graphics.strokeRectShape(this.rect5);
-    graphics.strokeRectShape(this.rect6);
-    graphics.strokeRectShape(this.rect7);
-    graphics.strokeRectShape(this.rect8);
-    graphics.strokeRectShape(this.rect9);
-    graphics.strokeRectShape(this.rect10);
-    graphics.strokeRectShape(this.rect11);
-    graphics.strokeRectShape(this.rect12);
-    graphics.strokeRectShape(this.rect13);
-    graphics.strokeRectShape(this.rect14);
-    graphics.strokeRectShape(this.rect15);
-    graphics.strokeRectShape(this.rect16);
+    this.graphics.strokeRectShape(this.rect);
+    this.graphics.strokeRectShape(this.rect2);
+    this.graphics.strokeRectShape(this.rect3);
+    this.graphics.strokeRectShape(this.rect4);
+    this.graphics.strokeRectShape(this.rect5);
+    this.graphics.strokeRectShape(this.rect6);
+    this.graphics.strokeRectShape(this.rect7);
+    this.graphics.strokeRectShape(this.rect8);
+    this.graphics.strokeRectShape(this.rect9);
+    this.graphics.strokeRectShape(this.rect10);
+    this.graphics.strokeRectShape(this.rect11);
+    this.graphics.strokeRectShape(this.rect12);
+    this.graphics.strokeRectShape(this.rect13);
+    this.graphics.strokeRectShape(this.rect14);
+    this.graphics.strokeRectShape(this.rect15);
+    this.graphics.strokeRectShape(this.rect16);
+
 
     this.road = {
         roadArr: []
@@ -279,7 +281,7 @@ this.road.roadArr.push(this.rect16);
     // this.createEnemies(this.redEnemy, 3);
 
 
-    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D, X');
+    this.keys = this.input.keyboard.addKeys('P, Q,A,B,C,D, X,Y');
     this.count = 0;
     this.answered = false;
     this.correct = false;
@@ -290,6 +292,7 @@ this.road.roadArr.push(this.rect16);
     //this.qPic.setScale(.4);
     this.qPic.setVisible(false);
     this.qPic.setDepth(3);
+    //this.xKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
 
 };
 
@@ -308,6 +311,7 @@ gameScene.update = function() {
     this.attack(this.blueEnemy);
     this.gamePlay();
     this.moneyBar.setText('Money ' + this.money);
+   
     this.xRay();
 
 
@@ -506,11 +510,34 @@ function getRandomInt(min, max) {
 }
 
 gameScene.xRay = function(){
-    if(this.keys.X.isDown){
-          this.road.roadArr[0].isStroked = true;
-    }else{
-        this.road.roadArr[0].isStroked = false;    }
-
+    this.input.keyboard.on('keydown_X', function (event) {
+        this.graphics.lineStyle(2, 0x000000, 1);
+    }, this);
+  
+    if (this.keys.X.isDown){
+        this.graphics.lineStyle(2, 0x000000, 1);
+        this.graphics.strokeRectShape(this.road.roadArr[0]);
+        this.graphics.strokeRectShape(this.road.roadArr[1]);
+        this.graphics.strokeRectShape(this.road.roadArr[2]);
+        this.graphics.strokeRectShape(this.road.roadArr[3]);
+        this.graphics.strokeRectShape(this.road.roadArr[4]);
+        this.graphics.strokeRectShape(this.road.roadArr[5]);
+        this.graphics.strokeRectShape(this.road.roadArr[6]);
+        this.graphics.strokeRectShape(this.road.roadArr[7]);
+        this.graphics.strokeRectShape(this.road.roadArr[8]);
+        this.graphics.strokeRectShape(this.road.roadArr[9]);
+        this.graphics.strokeRectShape(this.road.roadArr[10]);
+        this.graphics.strokeRectShape(this.road.roadArr[11]);
+        this.graphics.strokeRectShape(this.road.roadArr[12]);
+        this.graphics.strokeRectShape(this.road.roadArr[13]);
+        this.graphics.strokeRectShape(this.road.roadArr[14]);
+        this.graphics.strokeRectShape(this.road.roadArr[15]);
+        console.log('x');
+    }
+    else if (this.keys.Y.isDown){
+        this.graphics.clear();
+        console.log('y');
+    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
