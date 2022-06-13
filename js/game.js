@@ -125,18 +125,16 @@ this.lost = this.sound.add('lost');
     this.rect4 = new Phaser.Geom.Rectangle(210, 170, 80, 310);
     this.rect5 = new Phaser.Geom.Rectangle(240, 420, 200, 70);
     this.rect6 = new Phaser.Geom.Rectangle(380, 80, 80, 400);
-
     this.rect7 = new Phaser.Geom.Rectangle(115, 80, 330, 70);
-
-    this.rect8 = new Phaser.Geom.Rectangle(125, 25, 25, 100);
-    this.rect9 = new Phaser.Geom.Rectangle(125, 25, 400, 25);
-    this.rect10 = new Phaser.Geom.Rectangle(500, 25, 25, 100);
-    this.rect11 = new Phaser.Geom.Rectangle(500, 100, 125, 25);
-    this.rect12 = new Phaser.Geom.Rectangle(600, 100, 25, 110);
-    this.rect13 = new Phaser.Geom.Rectangle(500, 190, 125, 25);
-    this.rect14 = new Phaser.Geom.Rectangle(495, 190, 30, 180);
-    this.rect15 = new Phaser.Geom.Rectangle(125, 340, 400, 30);
-    this.rect16 = new Phaser.Geom.Rectangle(120, 340, 30, 200);
+    this.rect8 = new Phaser.Geom.Rectangle(105, 15, 70, 100);
+    this.rect9 = new Phaser.Geom.Rectangle(105, 15, 440, 48);
+    this.rect10 = new Phaser.Geom.Rectangle(480, 15, 70, 130);
+    this.rect11 = new Phaser.Geom.Rectangle(480, 80, 160, 65);
+    this.rect12 = new Phaser.Geom.Rectangle(580, 80, 60, 140);
+    this.rect13 = new Phaser.Geom.Rectangle(480, 170, 140, 60);
+    this.rect14 = new Phaser.Geom.Rectangle(480, 170, 60, 200);
+    this.rect15 = new Phaser.Geom.Rectangle(110, 325, 440, 60);
+    this.rect16 = new Phaser.Geom.Rectangle(110, 325, 60, 200);
 
 
 
