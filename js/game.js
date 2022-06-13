@@ -743,9 +743,9 @@ gameScene.round3 = function(){
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round4 = function(){
-    this.createEnemies(this.redEnemy, 8);
-    this.createEnemies(this.redEnemy, 8);
-    this.createEnemies(this.redEnemy, 8);
+    this.createEnemies(this.redEnemy, 18);
+    this.createEnemies(this.redEnemy, 18);
+    this.createEnemies(this.redEnemy, 18);
     this.increase();
     this.roundNum = 4;
     this.round.setText(' ' + this.roundNum);
@@ -791,9 +791,9 @@ gameScene.round9 = function(){
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round10 = function(){
-    this.createEnemies(this.redEnemy, 10);
-    this.createEnemies(this.blueEnemy, 10);
-    this.createEnemies(this.blackEnemy, 10);
+    this.createEnemies(this.redEnemy, 20);
+    this.createEnemies(this.blueEnemy, 20);
+    this.createEnemies(this.blackEnemy, 20);
     this.increase();
     this.roundNum = 10;
     this.round.setText(' ' + this.roundNum);
