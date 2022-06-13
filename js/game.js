@@ -249,8 +249,8 @@ this.road.roadArr.push(this.rect16);
         startX: 0,
         startY: 275,
         color: 'red',
-        health: 10,
-        damage: 100,
+        health: 15,
+        damage: 10,
         speed: 18000
     };
     //setup stats for a red Enemy
@@ -260,7 +260,7 @@ this.road.roadArr.push(this.rect16);
         startX: 0,
         startY: 275,
         color: 'blue',
-        health: 20,
+        health: 25,
         damage: 15,
         speed: 11000
     };
@@ -514,6 +514,7 @@ gameScene.xRay = function(){
   
     if (this.keys.X.isDown){
         this.graphics.lineStyle(2, 0x000000, 1);
+        // this.graphics.fillStyle(0x000000);
         this.graphics.strokeRectShape(this.road.roadArr[0]);
         this.graphics.strokeRectShape(this.road.roadArr[1]);
         this.graphics.strokeRectShape(this.road.roadArr[2]);
@@ -577,7 +578,12 @@ if(this.keys.P.isDown && this.count == 4){
 this.round3();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 5){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 5){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase(); 
+    }
 }
 
 //round 4
@@ -585,7 +591,11 @@ if(this.keys.P.isDown && this.count == 6){
 this.round4();
 }       //question break
 else if(this.enemyArr.length < 1 && this.count == 7){
-this.increase(); }
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 7){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
+this.increase(); }}
 
 //round 5
 if(this.keys.P.isDown && this.count == 8){
@@ -593,8 +603,12 @@ this.round5();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 9){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 9){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 6
 if(this.keys.P.isDown && this.count == 10){
@@ -602,8 +616,12 @@ this.round6();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 11){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 11){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 7
 if(this.keys.P.isDown && this.count == 12){
@@ -611,8 +629,12 @@ this.round7();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 13){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 13){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 8
 if(this.keys.P.isDown && this.count == 14){
@@ -620,8 +642,12 @@ this.round8();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 15){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 15){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 9
 if(this.keys.P.isDown && this.count == 16){
@@ -629,8 +655,12 @@ this.round9();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 17){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 17){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 10
 if(this.keys.P.isDown && this.count == 18){
@@ -638,12 +668,25 @@ this.round10();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 19){
+    this.questionWithPic(' ', 'h2',0.4,'A');
+    if(this.answered && this.count == 19){
+        this.q1.setText(' ');
+        this.qPic.setVisible(false);
 this.increase();
-}
+}}
 
 //round 11
 if(this.keys.P.isDown && this.count == 20){
 this.round11();
+}
+//question break
+else if(this.enemyArr.length < 1 && this.count == 121){
+this.increase();
+}
+
+//round 12
+if(this.keys.P.isDown && this.count == 20){
+this.round12();
 }
 //question break
 else if(this.enemyArr.length < 1 && this.count == 121){
@@ -726,17 +769,39 @@ gameScene.round8 = function(){
     this.createEnemies(this.blueEnemy, 15);
     this.createEnemies(this.redEnemy, 15);
     this.increase();
-    this.roundNum = 7;
+    this.roundNum = 8;
     this.round.setText(' ' + this.roundNum);
 }
 gameScene.round9 = function(){
-
+    this.createEnemies(this.blueEnemy, 30);
+    this.createEnemies(this.blackEnemy, 15);
+    this.increase();
+    this.roundNum = 9;
+    this.round.setText(' ' + this.roundNum);
 }
 gameScene.round10 = function(){
-
+    this.createEnemies(this.redEnemy, 10);
+    this.createEnemies(this.blueEnemy, 10);
+    this.createEnemies(this.blackEnemy, 10);
+    this.increase();
+    this.roundNum = 10;
+    this.round.setText(' ' + this.roundNum);
 }
 gameScene.round11 = function(){
-
+    this.createEnemies(this.redEnemy, 10);
+    this.createEnemies(this.blueEnemy, 10);
+    this.createEnemies(this.blackEnemy, 10);
+    this.increase();
+    this.roundNum = 11;
+    this.round.setText(' ' + this.roundNum);
+}
+gameScene.round12 = function(){
+    this.createEnemies(this.redEnemy, 50);
+    this.createEnemies(this.blueEnemy, 100);
+    this.createEnemies(this.blackEnemy, 50);
+    this.increase();
+    this.roundNum = 12;
+    this.round.setText(' ' + this.roundNum);
 }
 
 
